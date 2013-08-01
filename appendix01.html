@@ -1,0 +1,3179 @@
+<section class="appendix" data-type="appendix" id="APPENDIX">
+<h1>Solutions to Études</h1>
+<p>Here are the solutions that I came up with for the études in
+this book. Since I was learning Erlang as I wrote them, you
+may expect some of the code to be naïve in the extreme.</p>
+
+
+
+<section class="sect1" data-type="sect1" id="SOLUTION02-ET01">
+<h1>Solution 2-1</h1>
+<p>Here is a suggested solution for
+<a data-type="xref" href="#CH02-ET01">Étude 2-1</a>.</p>
+
+
+
+
+<section class="sect2" data-type="sect2" id="__code_geom_erl_code">
+<h2><code>geom.erl</code></h2>
+<pre data-type="programlisting" class="programlisting" data-code-language="erlang">-module(geom).
+-export([area/2]).
+
+area(L,W) -&gt; L * W.
+</pre>
+</section>
+
+
+</section>
+
+
+
+
+
+
+<section class="sect1" data-type="sect1" id="SOLUTION02-ET02">
+<h1>Solution 2-2</h1>
+<p>Here is a suggested solution for
+<a data-type="xref" href="#CH02-ET02">Étude 2-2</a>.</p>
+
+
+
+
+<section class="sect2" data-type="sect2" id="__code_geom_erl_code_2">
+<h2><code>geom.erl</code></h2>
+<pre data-type="programlisting" class="programlisting" data-code-language="erlang">%% @author J D Eisenberg &lt;jdavid.eisenberg@gmail.com&gt;
+%% @doc Functions for calculating areas of geometric shapes.
+%% @copyright 2013 J D Eisenberg
+%% @version 0.1
+
+-module(geom).
+-export([area/2]).
+
+%% @doc Calculates the area of a rectangle, given the
+%% length and width. Returns the product
+%% of its arguments.
+
+-spec(area(number(),number()) -&gt; number()).
+
+area(L,W) -&gt; L * W.
+</pre>
+</section>
+
+
+</section>
+
+
+
+
+
+
+<section class="sect1" data-type="sect1" id="SOLUTION02-ET03">
+<h1>Solution 2-3</h1>
+<p>Here is a suggested solution for
+<a data-type="xref" href="#CH02-ET03">Étude 2-3</a>.</p>
+
+
+
+
+<section class="sect2" data-type="sect2" id="__code_geom_erl_code_3">
+<h2><code>geom.erl</code></h2>
+<pre data-type="programlisting" class="programlisting" data-code-language="erlang">%% @author J D Eisenberg &lt;jdavid.eisenberg@gmail.com&gt;
+%% @doc Functions for calculating areas of geometric shapes.
+%% @copyright 2013 J D Eisenberg
+%% @version 0.1
+
+-module(geom).
+-export([area/2]).
+
+%% @doc Calculates the area of a rectangle, given the
+%% length and width. Returns the product
+%% of its arguments.
+
+-spec(area(number(),number()) -&gt; number()).
+
+area(L,W) -&gt; L * W.
+</pre>
+</section>
+
+
+</section>
+
+
+
+
+
+
+<section class="sect1" data-type="sect1" id="SOLUTION03-ET01">
+<h1>Solution 3-1</h1>
+<p>Here is a suggested solution for
+<a data-type="xref" href="#CH03-ET01">Étude 3-1</a>.</p>
+
+
+
+
+<section class="sect2" data-type="sect2" id="__code_geom_erl_code_4">
+<h2><code>geom.erl</code></h2>
+<pre data-type="programlisting" class="programlisting" data-code-language="erlang">%% @author J D Eisenberg &lt;jdavid.eisenberg@gmail.com&gt;
+%% @doc Functions for calculating areas of geometric shapes.
+%% @copyright 2013 J D Eisenberg
+%% @version 0.1
+
+-module(geom).
+-export([area/3]).
+
+%% @doc Calculates the area of a shape, given the
+%% shape and two of the dimensions. Returns the product
+%% of its arguments for a rectangle, one half the
+%% product of the arguments for a triangle, and
+%% math:pi times the product of the arguments for
+%% an ellipse.
+
+-spec(area(atom(), number(),number()) -&gt; number()).
+
+area(rectangle, L,W) -&gt; L * W;
+
+area(triangle, B, H) -&gt; (B * H) / 2.0;
+
+area(ellipse, A, B) -&gt; math:pi() * A * B.
+</pre>
+</section>
+
+
+</section>
+
+
+
+
+
+
+<section class="sect1" data-type="sect1" id="SOLUTION03-ET02">
+<h1>Solution 3-2</h1>
+<p>Here is a suggested solution for
+<a data-type="xref" href="#CH03-ET02">Étude 3-2</a>.</p>
+
+
+
+
+<section class="sect2" data-type="sect2" id="__code_geom_erl_code_5">
+<h2><code>geom.erl</code></h2>
+<pre data-type="programlisting" class="programlisting" data-code-language="erlang">%% @author J D Eisenberg &lt;jdavid.eisenberg@gmail.com&gt;
+%% @doc Functions for calculating areas of geometric shapes.
+%% @copyright 2013 J D Eisenberg
+%% @version 0.1
+
+-module(geom).
+-export([area/3]).
+
+%% @doc Calculates the area of a shape, given the
+%% shape and two of the dimensions. Returns the product
+%% of its arguments for a rectangle, one half the
+%% product of the arguments for a triangle, and
+%% math:pi times the product of the arguments for
+%% an ellipse. Ensure that both arguments are greater than
+%% or equal to zero.
+
+-spec(area(atom(), number(),number()) -&gt; number()).
+
+area(rectangle, L,W) when L &gt;=0, W &gt;= 0 -&gt; L * W;
+
+area(triangle, B, H) when B&gt;= 0, H &gt;= 0 -&gt; (B * H) / 2.0;
+
+area(ellipse, A, B) when A &gt;= 0, B &gt;= 0 -&gt; math:pi() * A * B.
+</pre>
+</section>
+
+
+</section>
+
+
+
+
+
+
+<section class="sect1" data-type="sect1" id="SOLUTION03-ET03">
+<h1>Solution 3-3</h1>
+<p>Here is a suggested solution for
+<a data-type="xref" href="#CH03-ET03">Étude 3-3</a>.</p>
+
+
+
+
+<section class="sect2" data-type="sect2" id="__code_geom_erl_code_6">
+<h2><code>geom.erl</code></h2>
+<pre data-type="programlisting" class="programlisting" data-code-language="erlang">%% @author J D Eisenberg &lt;jdavid.eisenberg@gmail.com&gt;
+%% @doc Functions for calculating areas of geometric shapes.
+%% @copyright 2013 J D Eisenberg
+%% @version 0.1
+
+-module(geom).
+-export([area/3]).
+
+%% @doc Calculates the area of a shape, given the
+%% shape and two of the dimensions. Returns the product
+%% of its arguments for a rectangle, one half the
+%% product of the arguments for a triangle, and
+%% math:pi times the product of the arguments for
+%% an ellipse. Invalid data returns zero.
+
+-spec(area(atom(), number(),number()) -&gt; number()).
+
+area(rectangle, L,W) when L &gt;=0, W &gt;= 0 -&gt; L * W;
+
+area(triangle, B, H) when B&gt;= 0, H &gt;= 0 -&gt; (B * H) / 2.0;
+
+area(ellipse, A, B) when A &gt;= 0, B &gt;= 0 -&gt; math:pi() * A * B;
+
+area(_, _, _) -&gt; 0.
+</pre>
+</section>
+
+
+</section>
+
+
+
+
+
+
+<section class="sect1" data-type="sect1" id="SOLUTION03-ET04">
+<h1>Solution 3-4</h1>
+<p>Here is a suggested solution for
+<a data-type="xref" href="#CH03-ET04">Étude 3-4</a>.</p>
+
+
+
+
+<section class="sect2" data-type="sect2" id="__code_geom_erl_code_7">
+<h2><code>geom.erl</code></h2>
+<pre data-type="programlisting" class="programlisting" data-code-language="erlang">%% @author J D Eisenberg &lt;jdavid.eisenberg@gmail.com&gt;
+%% @doc Functions for calculating areas of geometric shapes.
+%% @copyright 2013 J D Eisenberg
+%% @version 0.1
+
+-module(geom).
+-export([area/1]).
+
+%% @doc Calculates the area of a shape, given a tuple
+%% containing a shape and two of the dimensions.
+%% Works by calling a private function.
+
+-spec(area({atom(), number(),number()}) -&gt; number()).
+
+area({Shape, Dim1, Dim2}) -&gt; area(Shape, Dim1, Dim2).
+
+%% @doc Returns the product of its arguments for a rectangle,
+%% one half the product of the arguments for a triangle,
+%% and math:pi times the product of the arguments for
+%% an ellipse. Invalid data returns zero.
+
+-spec(area(atom(), number(),number()) -&gt; number()).
+
+area(rectangle, L,W) when L &gt;=0, W &gt;= 0 -&gt; L * W;
+
+area(triangle, B, H) when B&gt;= 0, H &gt;= 0 -&gt; (B * H) / 2.0;
+
+area(ellipse, A, B) when A &gt;= 0, B &gt;= 0 -&gt; math:pi() * A * B;
+
+area(_, _, _) -&gt; 0.
+</pre>
+</section>
+
+
+</section>
+
+
+
+
+
+
+<section class="sect1" data-type="sect1" id="SOLUTION04-ET01">
+<h1>Solution 4-1</h1>
+<p>Here is a suggested solution for
+<a data-type="xref" href="#CH04-ET01">Étude 4-1</a>.</p>
+
+
+
+
+<section class="sect2" data-type="sect2" id="__code_geom_erl_code_8">
+<h2><code>geom.erl</code></h2>
+<pre data-type="programlisting" class="programlisting" data-code-language="erlang">%% @author J D Eisenberg &lt;jdavid.eisenberg@gmail.com&gt;
+%% @doc Functions for calculating areas of geometric shapes.
+%% @copyright 2013 J D Eisenberg
+%% @version 0.1
+
+-module(geom).
+-export([area/3]).
+
+%% @doc Calculates the area of a shape, given the
+%% shape and two of the dimensions. Returns the product
+%% of its arguments for a rectangle, one half the
+%% product of the arguments for a triangle, and
+%% math:pi times the product of the arguments for
+%% an ellipse.
+
+-spec(area(atom(), number(),number()) -&gt; number()).
+
+area(Shape, A, B) when A &gt;= 0, B &gt;= 0 -&gt;
+  case Shape of
+    rectangle -&gt; A * B;
+    triangle -&gt; (A * B) / 2.0;
+    ellipse -&gt; math:pi() * A * B
+  end.</pre>
+</section>
+
+
+</section>
+
+
+
+
+
+
+<section class="sect1" data-type="sect1" id="SOLUTION04-ET02">
+<h1>Solution 4-2</h1>
+<p>Here is a suggested solution for
+<a data-type="xref" href="#CH04-ET02">Étude 4-2</a>.</p>
+
+
+
+
+<section class="sect2" data-type="sect2" id="__code_dijkstra_erl_code">
+<h2><code>dijkstra.erl</code></h2>
+<pre data-type="programlisting" class="programlisting" data-code-language="erlang">%% @author J D Eisenberg &lt;jdavid.eisenberg@gmail.com&gt;
+%% @doc Recursive function for calculating GCD
+%% of two numbers using Dijkstra's algorithm.
+%% @copyright 2013 J D Eisenberg
+%% @version 0.1
+
+-module(dijkstra).
+-export([gcd/2]).
+
+%% @doc Calculates the greatest common divisor of two
+%% integers. Uses Dijkstra's algorithm, which does not
+%% require any division.
+
+-spec(gcd(number(), number()) -&gt; number()).
+
+gcd(M, N) -&gt;
+  if
+    M == N  -&gt; M;
+    M &gt; N -&gt; gcd(M - N, N);
+    true -&gt; gcd(M, N - M)
+  end.
+</pre>
+</section>
+
+
+</section>
+
+
+
+
+
+
+<section class="sect1" data-type="sect1" id="SOLUTION04-ET02B">
+<h1>Solution 4-2</h1>
+<p>Here is another solution for
+<a data-type="xref" href="#CH04-ET02">Étude 4-2</a>. This solution uses guards instead of
+<code>if</code>.</p>
+
+
+
+
+<section class="sect2" data-type="sect2" id="__code_dijkstra_erl_code_2">
+<h2><code>dijkstra.erl</code></h2>
+<pre data-type="programlisting" class="programlisting" data-code-language="erlang">%% @author J D Eisenberg &lt;jdavid.eisenberg@gmail.com&gt;
+%% @doc Recursive function for calculating GCD
+%% of two numbers using Dijkstra's algorithm.
+%% @copyright 2013 J D Eisenberg
+%% @version 0.1
+
+-module(dijkstra).
+-export([gcd/2]).
+
+%% @doc Calculates the greatest common divisor of two
+%% integers. Uses Dijkstra's algorithm, which does not
+%% require any division.
+
+-spec(gcd(number(), number()) -&gt; number()).
+
+gcd(M, N) when M == N -&gt;
+  M;
+
+gcd(M,N) when M &gt; N -&gt;
+  gcd(M - N, N);
+
+gcd(M, N) -&gt;
+  gcd(M, N - M).
+</pre>
+</section>
+
+
+</section>
+
+
+
+
+
+
+<section class="sect1" data-type="sect1" id="SOLUTION04-ET03">
+<h1>Solution 4-3</h1>
+<p>Here is a suggested solution for
+<a data-type="xref" href="#CH04-ET03">Étude 4-3</a>.</p>
+
+
+
+
+<section class="sect2" data-type="sect2" id="__code_powers_erl_code">
+<h2><code>powers.erl</code></h2>
+<pre data-type="programlisting" class="programlisting" data-code-language="erlang">%% @author J D Eisenberg &lt;jdavid.eisenberg@gmail.com&gt;
+%% @doc Functions for raising a number to an integer power
+%% and finding the Nth root of a number using Newton's method.
+%% @copyright 2013 J D Eisenberg
+%% @version 0.1
+
+-module(powers).
+-export([raise/2]).
+
+%% @doc Raise a number X to an integer power N.
+%% Any number to the power 0 equals 1.
+%% Any number to the power 1 is that number itself.
+%% When N is positive, X^N is equal to X times X^(N - 1)
+%% When N is negative, X^N is equal to 1.0 / X^N
+
+-spec(raise(number(), integer()) -&gt; number()).
+
+raise(_, 0) -&gt; 1;
+
+raise(X, 1) -&gt; X;
+
+raise(X, N) when N &gt; 0 -&gt; X * raise(X, N - 1);
+
+raise(X, N) when N &lt; 0 -&gt; 1 / raise(X, -N).
+</pre>
+</section>
+
+
+
+
+
+
+<section class="sect2" data-type="sect2" id="__code_powers_traced_erl_code">
+<h2><code>powers_traced.erl</code></h2>
+<p>This code contains output that lets you see the progress
+of the recursion.</p>
+<pre data-type="programlisting" class="programlisting" data-code-language="erlang">%% @author J D Eisenberg &lt;jdavid.eisenberg@gmail.com&gt;
+%% @doc Functions for raising a number to an integer power
+%% and finding the Nth root of a number using Newton's method.
+%% @copyright 2013 J D Eisenberg
+%% @version 0.1
+
+-module(powers_traced).
+-export([raise/2]).
+
+%% @doc Raise a number X to an integer power N.
+%% Any number to the power 0 equals 1.
+%% Any number to the power 1 is that number itself.
+%% When N is positive, X^N is equal to X times X^(N - 1)
+%% When N is negative, X^N is equal to 1.0 / X^N
+
+-spec(raise(number(), integer()) -&gt; number()).
+
+raise(_, 0) -&gt; 1;
+
+raise(X, 1) -&gt; X;
+
+raise(X, N) when N &gt; 0 -&gt;
+  io:format("Enter X: ~p, N: ~p~n", [X, N]),
+  Result = X * raise(X, N - 1),
+  io:format("Result is ~p~n", [Result]),
+  Result;
+
+raise(X, N) when N &lt; 0 -&gt; 1 / raise(X, -N).
+</pre>
+</section>
+
+
+</section>
+
+
+
+
+
+
+<section class="sect1" data-type="sect1" id="SOLUTION04-ET04">
+<h1>Solution 4-4</h1>
+<p>Here is a suggested solution for
+<a data-type="xref" href="#CH04-ET04">Étude 4-4</a>.</p>
+
+
+
+
+<section class="sect2" data-type="sect2" id="__code_powers_erl_code_2">
+<h2><code>powers.erl</code></h2>
+<pre data-type="programlisting" class="programlisting" data-code-language="erlang">%% @author J D Eisenberg &lt;jdavid.eisenberg@gmail.com&gt;
+%% @doc Functions for raising a number to an integer power.
+%% @copyright 2013 J D Eisenberg
+%% @version 0.1
+
+-module(powers).
+-export([raise/2]).
+
+%% @doc Raise a number X to an integer power N.
+%% Any number to the power 0 equals 1.
+%% Any number to the power 1 is that number itself.
+%% When N is positive, X^N is equal to X times X^(N - 1)
+%% When N is negative, X^N is equal to 1.0 / X^N
+
+-spec(raise(number(), integer()) -&gt; number()).
+
+raise(_, 0) -&gt; 1;
+
+raise(X, N) when N &gt; 0 -&gt;
+  raise(X, N, 1);
+
+raise(X, N) when N &lt; 0 -&gt; 1 / raise(X, -N).
+
+%% @doc Helper function to raise X to N by passing an Accumulator
+%% from call to call.
+%% When N is 0, return the value of the Accumulator;
+%% otherwise return raise(X, N - 1, X * Accumulator)
+
+raise(_, 0, Accumulator) -&gt; Accumulator;
+
+raise(X, N, Accumulator) -&gt;
+  raise(X, N-1, X * Accumulator).
+</pre>
+</section>
+
+
+
+
+
+
+<section class="sect2" data-type="sect2" id="__code_powers_traced_erl_code_2">
+<h2><code>powers_traced.erl</code></h2>
+<p>This code contains output that lets you see the progress
+of the recursion.</p>
+<pre data-type="programlisting" class="programlisting" data-code-language="erlang">%% @author J D Eisenberg &lt;jdavid.eisenberg@gmail.com&gt;
+%% @doc Functions for raising a number to an integer power.
+%% @copyright 2013 J D Eisenberg
+%% @version 0.1
+
+-module(powers_traced).
+-export([raise/2]).
+
+%% @doc Raise a number X to an integer power N.
+%% Any number to the power 0 equals 1.
+%% Any number to the power 1 is that number itself.
+%% When N is negative, X^N is equal to 1.0 / X^N
+%% When N is positive, call raise/3 with 1 as the accumulator.
+
+-spec(raise(number(), integer()) -&gt; number()).
+
+raise(_, 0) -&gt; 1;
+
+raise(X, N) when N &gt; 0 -&gt;
+  raise(X, N, 1);
+
+raise(X, N) when N &lt; 0 -&gt; 1 / raise(X, -N).
+
+%% @doc Helper function to raise X to N by passing an Accumulator
+%% from call to call.
+%% When N is 0, return the value of the Accumulator;
+%% otherwise return raise(X, N - 1, X * Accumulator)
+
+-spec(raise(number(), integer(), number()) -&gt; number()).
+
+raise(_, 0, Accumulator) -&gt;
+  io:format("N equals 0."),
+  Result = Accumulator,
+  io:format("Result is ~p~n", [Result]),
+  Result;
+
+raise(X, N, Accumulator) -&gt;
+  io:format("Enter: X is ~p, N is ~p, Accumulator is ~p~n",
+    [X, N, Accumulator]),
+  Result = raise(X, N-1, X * Accumulator),
+  io:format("Result is ~p~n", [Result]),
+  Result.
+</pre>
+</section>
+
+
+</section>
+
+
+
+
+
+
+<section class="sect1" data-type="sect1" id="SOLUTION04-ET05">
+<h1>Solution 4-5</h1>
+<p>Here is a suggested solution for
+<a data-type="xref" href="#CH04-ET05">Étude 4-5</a>.</p>
+
+
+
+
+<section class="sect2" data-type="sect2" id="__code_powers_erl_code_3">
+<h2><code>powers.erl</code></h2>
+<pre data-type="programlisting" class="programlisting" data-code-language="erlang">%% @author J D Eisenberg &lt;jdavid.eisenberg@gmail.com&gt;
+%% @doc Functions for raising a number to an integer power
+%% and finding the Nth root of a number using Newton's method.
+%% @copyright 2013 J D Eisenberg
+%% @version 0.1
+
+-module(powers).
+-export([nth_root/2, raise/2]).
+
+%% @doc Find the nth root of a given number.
+
+-spec(nth_root(number(), integer()) -&gt; number()).
+
+nth_root(X, N) -&gt;
+  A = X / 2.0,
+  nth_root(X, N, A).
+
+%% @doc Helper function to find an nth_root by passing
+%% an approximation from one call to the next.
+%% If the difference between current and next approximations
+%% is less than 1.0e-8, return the next approximation; otherwise return
+%% nth_root(X, N, NextApproximation).
+
+nth_root(X, N, A) -&gt;
+  io:format("Current guess is ~p~n", [A]), %% see the guesses converge
+  F = raise(A, N) - X,
+  Fprime = N * raise(A, N - 1),
+  Next = A - F / Fprime,
+  Change = abs(Next - A),
+  if
+    Change &lt; 1.0e-8 -&gt; Next;
+    true -&gt; nth_root(X, N, Next)
+  end.
+
+%% @doc Raise a number X to an integer power N.
+%% Any number to the power 0 equals 1.
+%% Any number to the power 1 is that number itself.
+%% When N is positive, X^N is equal to X times X^(N - 1)
+%% When N is negative, X^N is equal to 1.0 / X^N
+
+-spec(raise(number(), integer()) -&gt; number()).
+
+raise(_, 0) -&gt; 1;
+
+raise(X, N) when N &gt; 0 -&gt;
+  raise(X, N, 1);
+
+raise(X, N) when N &lt; 0 -&gt; 1 / raise(X, -N).
+
+%% @doc Helper function to raise X to N by passing an Accumulator
+%% from call to call.
+%% When N is 0, return the value of the Accumulator;
+%% otherwise return raise(X, N - 1, X * Accumulator)
+
+raise(_, 0, Accumulator) -&gt; Accumulator;
+
+raise(X, N, Accumulator) -&gt;
+  raise(X, N-1, X * Accumulator).
+</pre>
+</section>
+
+
+</section>
+
+
+
+
+
+
+<section class="sect1" data-type="sect1" id="SOLUTION05-ET01">
+<h1>Solution 5-1</h1>
+<p>Here is a suggested solution for
+<a data-type="xref" href="#CH05-ET01">Étude 5-1</a>.</p>
+
+
+
+
+<section class="sect2" data-type="sect2" id="__code_geom_erl_code_9">
+<h2><code>geom.erl</code></h2>
+<pre data-type="programlisting" class="programlisting" data-code-language="erlang">%% @author J D Eisenberg &lt;jdavid.eisenberg@gmail.com&gt;
+%% @doc Functions for calculating areas of geometric shapes.
+%% @copyright 2013 J D Eisenberg
+%% @version 0.1
+
+-module(geom).
+-export([area/3]).
+
+%% @doc Calculates the area of a shape, given the
+%% shape and two of the dimensions. Returns the product
+%% of its arguments for a rectangle, one half the
+%% product of the arguments for a triangle, and
+%% math:pi times the product of the arguments for
+%% an ellipse.
+
+-spec(area(atom(), number(), number()) -&gt; number()).
+
+area(Shape, A, B) when A &gt;= 0, B &gt;= 0 -&gt;
+  case Shape of
+    rectangle -&gt; A * B;
+    triangle -&gt; (A * B) / 2.0;
+    ellipse -&gt; math:pi() * A * B
+  end.</pre>
+</section>
+
+
+
+
+
+
+<section class="sect2" data-type="sect2" id="__code_ask_area_erl_code">
+<h2><code>ask_area.erl</code></h2>
+<pre data-type="programlisting" class="programlisting" data-code-language="erlang">%% @author J D Eisenberg &lt;jdavid.eisenberg@gmail.com&gt;
+%% @doc Functions to calculate areas of shape given user input.
+%% @copyright 2013 J D Eisenberg
+%% @version 0.1
+
+-module(ask_area).
+-export([area/0]).
+
+%% @doc Requests a character for the name of a shape,
+%% numbers for its dimensions, and calculates shape's area.
+%% The characters are R for rectangle, T for triangle,
+%% and E for ellipse. Input is allowed in either upper
+%% or lower case.
+
+-spec(area() -&gt; number()).
+
+area() -&gt;
+  Answer = io:get_line("R)ectangle, T)riangle, or E)llipse &gt; "),
+  Shape = char_to_shape(hd(Answer)),
+  case Shape of
+    rectangle -&gt; Numbers = get_dimensions("width", "height");
+    triangle -&gt; Numbers = get_dimensions("base", "height");
+    ellipse -&gt; Numbers = get_dimensions("major axis", "minor axis");
+    unknown -&gt; Numbers = {error, "Unknown shape " ++ [hd(Answer)]}
+  end,
+
+  Area = calculate(Shape, element(1, Numbers), element(2, Numbers)),
+  Area.
+
+%% @doc Given a character, returns an atom representing the
+%% specified shape (or the atom unknown if a bad character is given).
+
+-spec(char_to_shape(char()) -&gt; atom()).
+
+char_to_shape(Char) -&gt;
+  case Char of
+    $R -&gt; rectangle;
+    $r -&gt; rectangle;
+    $T -&gt; triangle;
+    $t -&gt; triangle;
+    $E -&gt; ellipse;
+    $e -&gt; ellipse;
+    _ -&gt;  unknown
+  end.
+
+%% @doc Present a prompt and get a number from the
+%% user. Allow either integers or floats.
+
+-spec(get_number(string()) -&gt; number()).
+
+get_number(Prompt) -&gt;
+  Str = io:get_line("Enter " ++ Prompt ++ " &gt; "),
+  {Test, _} = string:to_float(Str),
+  case Test of
+    error -&gt; {N, _} = string:to_integer(Str);
+    _ -&gt; N = Test
+  end,
+  N.
+
+%% @doc Get dimensions for a shape. Input are the two prompts,
+%% output is a tuple {Dimension1, Dimension2}.
+
+-spec(get_dimensions(string(), string()) -&gt; {number(), number()}).
+
+get_dimensions(Prompt1, Prompt2) -&gt;
+  N1 = get_number(Prompt1),
+  N2 = get_number(Prompt2),
+  {N1, N2}.
+
+%% @doc Calculate area of a shape, given its shape and dimensions.
+%% Handle errors appropriately.
+
+-spec(calculate(atom(), number(), number()) -&gt; number()).
+
+calculate(unknown, _, Err) -&gt; io:format("~s~n", [Err]);
+calculate(_, error, _) -&gt; io:format("Error in first number.~n");
+calculate(_, _, error) -&gt; io:format("Error in second number.~n");
+calculate(_, A, B) when A &lt; 0; B &lt; 0 -&gt;
+  io:format("Both numbers must be greater than or equal to zero~n");
+calculate(Shape, A, B) -&gt; geom:area(Shape, A, B).
+
+
+</pre>
+</section>
+
+
+</section>
+
+
+
+
+
+
+<section class="sect1" data-type="sect1" id="SOLUTION05-ET02">
+<h1>Solution 5-2</h1>
+<p>Here is a suggested solution for
+<a data-type="xref" href="#CH05-ET02">Étude 5-2</a>.</p>
+
+
+
+
+<section class="sect2" data-type="sect2" id="__code_dates_erl_code">
+<h2><code>dates.erl</code></h2>
+<pre data-type="programlisting" class="programlisting" data-code-language="erlang">%% @author J D Eisenberg &lt;jdavid.eisenberg@gmail.com&gt;
+%% @doc Functions for splitting a date into a list of
+%% year-month-day.
+%% @copyright 2013 J D Eisenberg
+%% @version 0.1
+
+-module(dates).
+-export([date_parts/1]).
+
+%% @doc Takes a string in ISO date format (yyyy-mm-dd) and
+%% returns a list of integers in form [year, month, day].
+
+-spec(date_parts(list()) -&gt; list()).
+
+date_parts(DateStr) -&gt;
+  [YStr, MStr, DStr] = re:split(DateStr, "-", [{return, list}]),
+  [element(1, string:to_integer(YStr)),
+    element(1, string:to_integer(MStr)),
+    element(1, string:to_integer(DStr))].</pre>
+</section>
+
+
+</section>
+
+
+
+
+
+
+<section class="sect1" data-type="sect1" id="SOLUTION06-ET01">
+<h1>Solution 6-1</h1>
+<p>Here is a suggested solution for
+<a data-type="xref" href="#CH06-ET01">Étude 6-1</a>.</p>
+
+
+
+
+<section class="sect2" data-type="sect2" id="__code_stats_erl_code">
+<h2><code>stats.erl</code></h2>
+<pre data-type="programlisting" class="programlisting" data-code-language="erlang">%% @author J D Eisenberg &lt;jdavid.eisenberg@gmail.com&gt;
+%% @doc Functions for calculating basic statistics on a list of numbers.
+%% @copyright 2013 J D Eisenberg
+%% @version 0.1
+
+-module(stats).
+-export([minimum/1]).
+
+%% @doc Returns the minimum item in a list of numbers. Fails when given
+%% an empty list, as there's nothing reasonable to return.
+
+-spec(minimum(list(number())) -&gt; number()).
+
+minimum(NumberList) -&gt;
+  [Result | Rest] = NumberList,
+  minimum(Rest, Result).
+
+minimum([], Result) -&gt; Result;
+
+minimum([Head|Tail], Result) -&gt;
+  case Head &lt; Result of
+    true -&gt; minimum(Tail, Head);
+    false -&gt; minimum(Tail, Result)
+  end.
+</pre>
+</section>
+
+
+</section>
+
+
+
+
+
+
+<section class="sect1" data-type="sect1" id="SOLUTION06-ET02">
+<h1>Solution 6-2</h1>
+<p>Here is a suggested solution for
+<a data-type="xref" href="#CH06-ET02">Étude 6-2</a>.</p>
+
+
+
+
+<section class="sect2" data-type="sect2" id="__code_stats_erl_code_2">
+<h2><code>stats.erl</code></h2>
+<pre data-type="programlisting" class="programlisting" data-code-language="erlang">%% @author J D Eisenberg &lt;jdavid.eisenberg@gmail.com&gt;
+%% @doc Functions for calculating basic statistics on a list of numbers.
+%% @copyright 2013 J D Eisenberg
+%% @version 0.1
+
+-module(stats).
+-export([minimum/1, maximum/1, range/1]).
+
+%% @doc Returns the minimum item in a list of numbers. Fails when given
+%% an empty list, as there's nothing reasonable to return.
+
+-spec(minimum(list(number())) -&gt; number()).
+
+minimum(NumberList) -&gt;
+  [Result | Rest] = NumberList,
+  minimum(Rest, Result).
+
+minimum([], Result) -&gt; Result;
+
+minimum([Head|Tail], Result) -&gt;
+  case Head &lt; Result of
+    true -&gt; minimum(Tail, Head);
+    false -&gt; minimum(Tail, Result)
+  end.
+
+%% @doc Returns the maximum item in a list of numbers. Fails when given
+%% an empty list, as there's nothing reasonable to return.
+
+-spec(maximum(list(number())) -&gt; number()).
+
+maximum(NumberList) -&gt;
+  [Result | Rest] = NumberList,
+  maximum(Rest, Result).
+
+maximum([], Result) -&gt; Result;
+
+maximum([Head|Tail], Result) -&gt;
+  case Head &gt; Result of
+    true -&gt; maximum(Tail, Head);
+    false -&gt; maximum(Tail, Result)
+  end.
+
+%% @doc Return the range (maximum and minimum) of a list of numbers
+%% as a two-element list.
+-spec(range([number()]) -&gt; [number()]).
+
+range(NumberList) -&gt; [minimum(NumberList), maximum(NumberList)].
+</pre>
+</section>
+
+
+</section>
+
+
+
+
+
+
+<section class="sect1" data-type="sect1" id="SOLUTION06-ET03">
+<h1>Solution 6-3</h1>
+<p>Here is a suggested solution for
+<a data-type="xref" href="#CH06-ET03">Étude 6-3</a> with leap years handled in the
+<code>julian/5</code> function.</p>
+
+
+
+
+<section class="sect2" data-type="sect2" id="__code_dates_erl_code_2">
+<h2><code>dates.erl</code></h2>
+<pre data-type="programlisting" class="programlisting" data-code-language="erlang">%% @author J D Eisenberg &lt;jdavid.eisenberg@gmail.com&gt;
+%% @doc Functions for splitting a date into a list of
+%% year-month-day and finding Julian date.
+%% @copyright 2013 J D Eisenberg
+%% @version 0.1
+
+-module(dates).
+-export([date_parts/1, julian/1, is_leap_year/1]).
+
+%% @doc Takes a string in ISO date format (yyyy-mm-dd) and
+%% returns a list of integers in form [year, month, day].
+
+-spec(date_parts(string()) -&gt; list(integer())).
+
+date_parts(DateStr) -&gt;
+  [YStr, MStr, DStr] = re:split(DateStr, "-", [{return, list}]),
+  [element(1, string:to_integer(YStr)),
+    element(1, string:to_integer(MStr)),
+    element(1, string:to_integer(DStr))].
+
+%% @doc Takes a string in ISO date format (yyyy-mm-dd) and
+%% returns the day of the year (Julian date).
+
+-spec(julian(string()) -&gt; pos_integer()).
+
+julian(IsoDate) -&gt;
+  DaysPerMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31],
+  [Y, M, D] = date_parts(IsoDate),
+  julian(Y, M, D, DaysPerMonth, 0).
+
+%% @doc Helper function that recursively accumulates the number of days
+%% up to the specified date.
+
+-spec(julian(integer(), integer(), integer(), [integer()], integer) -&gt; integer()).
+
+julian(Y, M, D, MonthList, Total) when M &gt; 13 - length(MonthList) -&gt;
+  [ThisMonth|RemainingMonths] = MonthList,
+  julian(Y, M, D, RemainingMonths, Total + ThisMonth);
+
+julian(Y, M, D, _MonthList, Total) -&gt;
+  case M &gt; 2 andalso is_leap_year(Y) of
+    true -&gt; Total + D + 1;
+    false -&gt; Total + D
+  end.
+
+%% @doc Given a year, return true or false depending on whether
+%% the year is a leap year.
+
+-spec(is_leap_year(pos_integer()) -&gt; boolean()).
+
+is_leap_year(Year) -&gt;
+  (Year rem 4 == 0 andalso Year rem 100 /= 0)
+    orelse (Year rem 400 == 0).
+</pre>
+<p>Here is a suggested solution for
+<a data-type="xref" href="#CH06-ET03">Étude 6-3</a> with leap years handled in the
+<code>julian/1</code> function.</p>
+</section>
+
+
+
+
+
+
+<section class="sect2" data-type="sect2" id="__code_dates_erl_code_3">
+<h2><code>dates.erl</code></h2>
+<pre data-type="programlisting" class="programlisting" data-code-language="erlang">%% @author J D Eisenberg &lt;jdavid.eisenberg@gmail.com&gt;
+%% @doc Functions for splitting a date into a list of
+%% year-month-day and finding Julian date.
+%% @copyright 2013 J D Eisenberg
+%% @version 0.1
+
+-module(dates).
+-export([date_parts/1, julian/1, is_leap_year/1]).
+
+%% @doc Takes a string in ISO date format (yyyy-mm-dd) and
+%% returns a list of integers in form [year, month, day].
+
+-spec(date_parts(string()) -&gt; list(integer())).
+
+date_parts(DateStr) -&gt;
+  [YStr, MStr, DStr] = re:split(DateStr, "-", [{return, list}]),
+  [element(1, string:to_integer(YStr)),
+    element(1, string:to_integer(MStr)),
+    element(1, string:to_integer(DStr))].
+
+%% @doc Takes a string in ISO date format (yyyy-mm-dd) and
+%% returns the day of the year (Julian date).
+
+-spec(julian(string()) -&gt; pos_integer()).
+
+julian(IsoDate) -&gt;
+  [Y, M, D] = date_parts(IsoDate),
+  DaysInFeb = case is_leap_year(Y) of
+    true -&gt; 29;
+    _else -&gt; 28
+  end,
+  DaysPerMonth = [31, DaysInFeb, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31],
+  julian(Y, M, D, DaysPerMonth, 0).
+
+%% @doc Helper function that recursively accumulates the number of days
+%% up to the specified date.
+
+-spec(julian(integer(), integer(), integer(), [integer()], integer) -&gt; integer()).
+
+julian(Y, M, D, MonthList, Total) when M &gt; 13 - length(MonthList) -&gt;
+  [ThisMonth|RemainingMonths] = MonthList,
+  julian(Y, M, D, RemainingMonths, Total + ThisMonth);
+
+julian(_Y, _M, D, _MonthList, Total) -&gt;
+  Total + D.
+
+%% @doc Given a year, return true or false depending on whether
+%% the year is a leap year.
+
+-spec(is_leap_year(pos_integer()) -&gt; boolean()).
+
+is_leap_year(Year) -&gt;
+  (Year rem 4 == 0 andalso Year rem 100 /= 0)
+    orelse (Year rem 400 == 0).
+</pre>
+</section>
+
+
+</section>
+
+
+
+
+
+
+<section class="sect1" data-type="sect1" id="SOLUTION06-ET04">
+<h1>Solution 6-4</h1>
+<p>Here is a suggested solution for
+<a data-type="xref" href="#CH06-ET04">Étude 6-4</a>.</p>
+
+
+
+
+<section class="sect2" data-type="sect2" id="__code_teeth_erl_code">
+<h2><code>teeth.erl</code></h2>
+<pre data-type="programlisting" class="programlisting" data-code-language="erlang">%% @author J D Eisenberg &lt;jdavid.eisenberg@gmail.com&gt;
+%% @doc Show teeth that need attention due to excessive pocket depth.
+%% @copyright 2013 J D Eisenberg
+%% @version 0.1
+
+-module(teeth).
+-export([alert/1]).
+
+%% @doc Create a list of tooth numbers that require attention.
+
+-spec(alert[integer()]) -&gt; [integer()]).
+
+alert(ToothList) -&gt; alert(ToothList, 1, []).
+
+%% @doc Helper function that accumulates the list of teeth needing attention
+
+-spec(alert([integer()], integer(), [integer()]) -&gt; [integer()]).
+
+alert([], _Tooth_number, Result) -&gt; lists:reverse(Result);
+
+alert([Head | Tail ], ToothNumber, Result ) -&gt;
+  case stats:maximum(Head) &gt;= 4 of
+    true -&gt; alert(Tail, ToothNumber + 1, [ToothNumber | Result]);
+    false -&gt; alert(Tail, ToothNumber + 1, Result)
+  end.
+</pre>
+</section>
+
+
+
+
+
+
+<section class="sect2" data-type="sect2" id="__code_stats_erl_code_3">
+<h2><code>stats.erl</code></h2>
+<pre data-type="programlisting" class="programlisting" data-code-language="erlang">%% @author J D Eisenberg &lt;jdavid.eisenberg@gmail.com&gt;
+%% @doc Functions for calculating basic statistics on a list of numbers.
+%% @copyright 2013 J D Eisenberg
+%% @version 0.1
+
+-module(stats).
+-export([minimum/1, maximum/1, range/1]).
+
+%% @doc Returns the minimum item in a list of numbers. Fails when given
+%% an empty list, as there's nothing reasonable to return.
+
+-spec(minimum([number()]) -&gt; number()).
+
+minimum(NumberList) -&gt;
+  minimum(NumberList, hd(NumberList)).
+
+minimum([], Result) -&gt; Result;
+
+minimum([Head|Tail], Result) -&gt;
+  case Head &lt; Result of
+    true -&gt; minimum(Tail, Head);
+    false -&gt; minimum(Tail, Result)
+  end.
+
+%% @doc Returns the maximum item in a list of numbers. Fails when given
+%% an empty list, as there's nothing reasonable to return.
+
+-spec(maximum([number()]) -&gt; number()).
+
+maximum(NumberList) -&gt;
+  maximum(NumberList, hd(NumberList)).
+
+maximum([], Result) -&gt; Result;
+
+maximum([Head|Tail], Result) -&gt;
+  case Head &gt; Result of
+    true -&gt; maximum(Tail, Head);
+    false -&gt; maximum(Tail, Result)
+  end.
+
+%% @doc Return the range (maximum and minimum) of a list of numbers
+%% as a two-element list.
+-spec(range([number()]) -&gt; [number()]).
+
+range(NumberList) -&gt; [minimum(NumberList), maximum(NumberList)].
+
+</pre>
+</section>
+
+
+</section>
+
+
+
+
+
+
+<section class="sect1" data-type="sect1" id="SOLUTION06-ET05">
+<h1>Solution 6-5</h1>
+<p>Here is a suggested solution for
+<a data-type="xref" href="#CH06-ET05">Étude 6-5</a>.</p>
+
+
+
+
+<section class="sect2" data-type="sect2" id="__code_non_fp_erl_code">
+<h2><code>non_fp.erl</code></h2>
+<pre data-type="programlisting" class="programlisting" data-code-language="erlang">%% @author J D Eisenberg &lt;jdavid.eisenberg@gmail.com&gt;
+%% @doc Generate a random set of teeth, with a certain
+%% percentage expected to be bad.
+%% @copyright 2013 J D Eisenberg
+%% @version 0.1
+
+-module(non_fp).
+-export([generate_teeth/2, test_teeth/0]).
+
+%% @doc Generate a list of lists, six numbers per tooth, giving random
+%% pocket depths. Takes a string where T="there's a tooth there"
+%% and F="no tooth"), and a float giving probability that a tooth is good.
+
+-spec(generate_teeth(string(), float()) -&gt; list(list(integer()))).
+
+generate_teeth(TeethPresent, ProbGood) -&gt;
+  random:seed(now()),
+  generate_teeth(TeethPresent, ProbGood, []).
+
+%% @doc Helper function that adds tooth data to the ultimate result.
+
+-spec(generate_teeth(string(), float(), [[integer()]]) -&gt; [[integer()]]).
+
+generate_teeth([], _Prob, Result) -&gt; lists:reverse(Result);
+
+generate_teeth([$F | Tail], ProbGood, Result) -&gt;
+  generate_teeth(Tail, ProbGood, [[0] | Result]);
+
+generate_teeth([$T | Tail], ProbGood, Result) -&gt;
+  generate_teeth(Tail, ProbGood,
+  [generate_tooth(ProbGood) | Result]).
+
+-spec(generate_tooth(float()) -&gt; list(integer())).
+
+%% @doc Generates a list of six numbers for a single tooth. Choose a
+%% random number between 0 and 1. If that number is less than the probability
+%% of a good tooth, it sets the "base depth" to 2, otherwise it sets the base
+%% depth to 3.
+
+generate_tooth(ProbGood) -&gt;
+  Good = random:uniform() &lt; ProbGood,
+  case Good of
+    true -&gt; BaseDepth = 2;
+    false -&gt; BaseDepth = 3
+  end,
+  generate_tooth(BaseDepth, 6, []).
+
+%% @doc Take the base depth, add a number in range -1..1 to it,
+%% and add it to the list.
+
+generate_tooth(_Base, 0, Result) -&gt; Result;
+
+generate_tooth(Base, N, Result) -&gt;
+  [Base + random:uniform(3) - 2 | generate_tooth(Base, N - 1, Result)].
+
+test_teeth() -&gt;
+  TList = "FTTTTTTTTTTTTTTFTTTTTTTTTTTTTTTT",
+  N = generate_teeth(TList, 0.75),
+  print_tooth(N).
+
+print_tooth([]) -&gt; io:format("Finished.~n");
+print_tooth([H|T]) -&gt;
+  io:format("~p~n", [H]),
+  print_tooth(T).
+
+</pre>
+</section>
+
+
+</section>
+
+
+
+
+
+
+<section class="sect1" data-type="sect1" id="SOLUTION07-ET01">
+<h1>Solution 7-1</h1>
+<p>Here is a suggested solution for
+<a data-type="xref" href="#CH07-ET01">Étude 7-1</a>.</p>
+
+
+
+
+<section class="sect2" data-type="sect2" id="__code_calculus_erl_code">
+<h2><code>calculus.erl</code></h2>
+<pre data-type="programlisting" class="programlisting" data-code-language="erlang">%% @author J D Eisenberg &lt;jdavid.eisenberg@gmail.com&gt;
+%% @doc Find the derivative of a function Fn at point X.
+%% @copyright 2013 J D Eisenberg
+%% @version 0.1
+
+-module(calculus).
+-export([derivative/2]).
+
+%% @doc Calculate derivative by classical definition.
+%% (Fn(X + H) - Fn(X)) / H
+
+-spec(derivative(function(), float()) -&gt; float()).
+
+derivative(Fn, X) -&gt;
+	Delta = 1.0e-10,
+	(Fn(X + Delta) - Fn(X)) / Delta.
+
+</pre>
+</section>
+
+
+</section>
+
+
+
+
+
+
+<section class="sect1" data-type="sect1" id="SOLUTION07-ET02">
+<h1>Solution 7-2</h1>
+<p>Here is a suggested solution for
+<a data-type="xref" href="#CH07-ET02">Étude 7-2</a>.</p>
+
+
+
+
+<section class="sect2" data-type="sect2" id="__code_patmatch_erl_code">
+<h2><code>patmatch.erl</code></h2>
+<pre data-type="programlisting" class="programlisting" data-code-language="erlang">%% @author J D Eisenberg &lt;jdavid.eisenberg@gmail.com&gt;
+%% @doc Use pattern matching in a list comprehension.
+%% @copyright 2013 J D Eisenberg
+%% @version 0.1
+
+-module(patmatch).
+-export([older_males/0, older_or_male/0]).
+
+%% @doc Select all males older than 40 from a list of tuples giving
+%% name, gender, and age.
+
+-spec(older_males() -&gt; list()).
+
+get_people() -&gt;
+  [{"Federico", $M, 22}, {"Kim", $F, 45}, {"Hansa", $F, 30},
+  {"Vu", $M, 47}, {"Cathy", $F, 32}, {"Elias", $M, 50}].
+
+older_males() -&gt;
+  People = get_people(),
+  [Name || {Name, Gender, Age} &lt;- People, Gender == $M, Age &gt; 40].
+
+older_or_male() -&gt;
+  People = get_people(),
+  [Name || {Name, Gender, Age} &lt;- People, (Gender == $M) orelse (Age &gt; 40)].
+</pre>
+</section>
+
+
+</section>
+
+
+
+
+
+
+<section class="sect1" data-type="sect1" id="SOLUTION07-ET03">
+<h1>Solution 7-3</h1>
+<p>Here is a suggested solution for
+<a data-type="xref" href="#CH07-ET03">Étude 7-3</a>.</p>
+
+
+
+
+<section class="sect2" data-type="sect2" id="__code_stats_erl_code_4">
+<h2><code>stats.erl</code></h2>
+<pre data-type="programlisting" class="programlisting" data-code-language="erlang">%% @author J D Eisenberg &lt;jdavid.eisenberg@gmail.com&gt;
+%% @doc Functions for calculating basic statistics on a list of numbers.
+%% @copyright 2013 J D Eisenberg
+%% @version 0.1
+
+-module(stats).
+-export([minimum/1, maximum/1, range/1, mean/1, stdv/1, stdv_sums/2]).
+
+%% @doc Returns the minimum item in a list of numbers. Fails when given
+%% an empty list, as there's nothing reasonable to return.
+
+-spec(minimum(list()) -&gt; number()).
+
+minimum(NumberList) -&gt;
+  minimum(NumberList, hd(NumberList)).
+
+minimum([], Result) -&gt; Result;
+
+minimum([Head|Tail], Result) -&gt;
+  case Head &lt; Result of
+    true -&gt; minimum(Tail, Head);
+    false -&gt; minimum(Tail, Result)
+  end.
+
+%% @doc Returns the maximum item in a list of numbers. Fails when given
+%% an empty list, as there's nothing reasonable to return.
+
+-spec(maximum(list()) -&gt; number()).
+
+maximum(NumberList) -&gt;
+  maximum(NumberList, hd(NumberList)).
+
+maximum([], Result) -&gt; Result;
+
+maximum([Head|Tail], Result) -&gt;
+  case Head &gt; Result of
+    true -&gt; maximum(Tail, Head);
+    false -&gt; maximum(Tail, Result)
+  end.
+
+%% @doc Return the range (maximum and minimum) of a list of numbers
+%% as a two-element list.
+-spec(range(list()) -&gt; list()).
+
+range(NumberList) -&gt; [minimum(NumberList), maximum(NumberList)].
+
+%% @doc Return the mean of the list.
+-spec(mean(list) -&gt; float()).
+
+mean(NumberList) -&gt;
+  Sum = lists:foldl(fun(V, A) -&gt; V + A end, 0, NumberList),
+  Sum / length(NumberList).
+
+stdv_sums(Value, Accumulator) -&gt;
+  [Sum, SumSquares] = Accumulator,
+  [Sum + Value, SumSquares + Value * Value].
+
+stdv(NumberList) -&gt;
+  N = length(NumberList),
+  [Sum, SumSquares] = lists:foldl(fun stdv_sums/2, [0, 0], NumberList),
+  math:sqrt((N * SumSquares - Sum * Sum) / (N * (N - 1))).
+
+</pre>
+</section>
+
+
+</section>
+
+
+
+
+
+
+<section class="sect1" data-type="sect1" id="SOLUTION07-ET04">
+<h1>Solution 7-4</h1>
+<p>Here is a suggested solution for
+<a data-type="xref" href="#CH07-ET04">Étude 7-4</a>.</p>
+
+
+
+
+<section class="sect2" data-type="sect2" id="__code_dates_erl_code_4">
+<h2><code>dates.erl</code></h2>
+<pre data-type="programlisting" class="programlisting" data-code-language="erlang">%% @author J D Eisenberg &lt;jdavid.eisenberg@gmail.com&gt;
+%% @doc Functions for splitting a date into a list of
+%% year-month-day and finding Julian date.
+%% @copyright 2013 J D Eisenberg
+%% @version 0.1
+
+-module(dates).
+-export([date_parts/1, julian/1, is_leap_year/1]).
+
+%% @doc Takes a string in ISO date format (yyyy-mm-dd) and
+%% returns a list of integers in form [year, month, day].
+
+-spec(date_parts(list()) -&gt; list()).
+
+date_parts(DateStr) -&gt;
+  [YStr, MStr, DStr] = re:split(DateStr, "-", [{return, list}]),
+  [element(1, string:to_integer(YStr)),
+    element(1, string:to_integer(MStr)),
+    element(1, string:to_integer(DStr))].
+
+%% @doc Takes a string in ISO date format (yyyy-mm-dd) and
+%% returns the day of the year (Julian date).
+%% Works by summing the days per month up to, but not including,
+%% the month in question, then adding the number of days.
+%% If it's a leap year and past February, add a leap day.
+
+-spec(julian(list()) -&gt; integer()).
+
+julian(DateStr) -&gt;
+  DaysPerMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31],
+  [Y, M, D] = date_parts(DateStr),
+  {Sublist, _} = lists:split(M - 1, DaysPerMonth),
+  Total = lists:foldl(fun(V, A) -&gt; V + A end, 0, Sublist),
+  case M &gt; 2 andalso is_leap_year(Y) of
+    true -&gt; Total + D + 1;
+    false -&gt; Total + D
+  end.
+
+is_leap_year(Year) -&gt;
+  (Year rem 4 == 0 andalso Year rem 100 /= 0)
+    orelse (Year rem 400 == 0).</pre>
+</section>
+
+
+</section>
+
+
+
+
+
+
+<section class="sect1" data-type="sect1" id="SOLUTION07-ET05">
+<h1>Solution 7-5</h1>
+<p>Here is a suggested solution for
+<a data-type="xref" href="#CH07-ET05">Étude 7-5</a>.</p>
+
+
+
+
+<section class="sect2" data-type="sect2" id="__code_cards_erl_code">
+<h2><code>cards.erl</code></h2>
+<pre data-type="programlisting" class="programlisting" data-code-language="erlang">%% @author J D Eisenberg &lt;jdavid.eisenberg@gmail.com&gt;
+%% @doc Functions for playing a card game.
+%% @copyright 2013 J D Eisenberg
+%% @version 0.1
+
+-module(cards).
+-export([make_deck/0, show_deck/1]).
+
+%% @doc generate a deck of cards
+make_deck() -&gt;
+  [{Value, Suit} || Value &lt;- ["A", 2, 3, 4, 5, 6, 7, 8, 9, 10, "J", "Q", "K"],
+    Suit &lt;- ["Clubs", "Diamonds", "Hearts", "Spades"]].
+
+show_deck(Deck) -&gt;
+  lists:foreach(fun(Item) -&gt; io:format("~p~n", [Item]) end, Deck).
+</pre>
+</section>
+
+
+</section>
+
+
+
+
+
+
+<section class="sect1" data-type="sect1" id="SOLUTION07-ET06">
+<h1>Solution 7-6</h1>
+<p>Here is a suggested solution for
+<a data-type="xref" href="#CH07-ET06">Étude 7-6</a>.</p>
+
+
+
+
+<section class="sect2" data-type="sect2" id="__code_cards_erl_code_2">
+<h2><code>cards.erl</code></h2>
+<pre data-type="programlisting" class="programlisting" data-code-language="erlang">%% @author J D Eisenberg &lt;jdavid.eisenberg@gmail.com&gt;
+%% @doc Functions for playing a card game.
+%% @copyright 2013 J D Eisenberg
+%% @version 0.1
+
+-module(cards).
+-export([make_deck/0, shuffle/1]).
+
+%% @doc generate a deck of cards
+make_deck() -&gt;
+  [{Value, Suit} || Value &lt;- ["A", 2, 3, 4, 5, 6, 7, 8, 9, 10, "J", "Q", "K"],
+    Suit &lt;- ["Clubs", "Diamonds", "Hearts", "Spades"]].
+
+shuffle(List) -&gt; shuffle(List, []).
+
+%% If the list is empty, return the accumulated value.
+shuffle([], Acc) -&gt; Acc;
+
+%% Otherwise, find a random location in the list and split the list
+%% at that location. Let's say the list has 52 elements and the random
+%% location is location 22. The first 22 elements go into Leading, and the
+%% last 30 elements go into [H|T]. Thus, H would contain element 23, and
+%% T would contain elements 24 through 52.
+%%
+%% H is the "chosen element". It goes into the accumulator (the shuffled list)
+%% and then we call shuffle again with the remainder of the deck: the
+%% leading elements and the tail of the split list.
+
+shuffle(List, Acc) -&gt;
+  {Leading, [H | T]} = lists:split(random:uniform(length(List)) - 1, List),
+  shuffle(Leading ++ T, [H | Acc]).
+</pre>
+</section>
+
+
+</section>
+
+
+
+
+
+
+<section class="sect1" data-type="sect1" id="SOLUTION08-ET01">
+<h1>Solution 8-1</h1>
+<p>Here is a suggested solution for
+<a data-type="xref" href="#CH08-ET01">Étude 8-1</a>.</p>
+
+
+
+
+<section class="sect2" data-type="sect2" id="__code_cards_erl_code_3">
+<h2><code>cards.erl</code></h2>
+<pre data-type="programlisting" class="programlisting" data-code-language="erlang">%% @author J D Eisenberg &lt;jdavid.eisenberg@gmail.com&gt;
+%% @doc Functions for playing card games.
+%% @copyright 2013 J D Eisenberg
+%% @version 0.1
+
+-module(cards).
+-export([make_deck/0, shuffle/1]).
+
+%% @doc generate a deck of cards
+-type card()::{string()|integer(), string()}.
+-spec(make_deck() -&gt; [card()]).
+
+%%make_deck() -&gt;
+%%  [{Value, Suit} || Value &lt;- ["A", 2, 3, 4, 5, 6, 7, 8, 9, 10, "J", "Q", "K"],
+%%    Suit &lt;- ["Clubs", "Diamonds", "Hearts", "Spades"]].
+
+make_deck() -&gt;
+  [{Value, Suit} || Value &lt;- ["A", 2, 3, 4],
+    Suit &lt;- ["Clubs", "Diamonds"]].
+
+%% Do a Fisher-Yates shuffle of a deck
+-spec(shuffle([card()])-&gt; [card()]).
+
+shuffle(List) -&gt; shuffle(List, []).
+
+%% If the list is empty, return the accumulated value.
+shuffle([], Acc) -&gt; Acc;
+
+%% Otherwise, find a random location in the list and split the list
+%% at that location. Let's say the list has 52 elements and the random
+%% location is location 22. The first 22 elements go into Leading, and the
+%% last 30 elements go into [H|T]. Thus, H would contain element 23, and
+%% T would contain elements 24 through 52.
+%%
+%% H is the "chosen element". It goes into the accumulator (the shuffled list)
+%% and then we call shuffle again with the remainder of the deck: the
+%% leading elements and the tail of the split list.
+
+shuffle(List, Acc) -&gt;
+  {Leading, [H | T]} = lists:split(random:uniform(length(List)) - 1, List),
+  shuffle(Leading ++ T, [H | Acc]).
+</pre>
+</section>
+
+
+
+
+
+
+<section class="sect2" data-type="sect2" id="__code_game_erl_code">
+<h2><code>game.erl</code></h2>
+<pre data-type="programlisting" class="programlisting" data-code-language="erlang">%% @author J D Eisenberg &lt;jdavid.eisenberg@gmail.com&gt;
+%% @doc Play the card game "war" with two players.
+%% @copyright 2013 J D Eisenberg
+%% @version 0.1
+
+-module(game).
+-export([play_game/0, dealer/0, player/2, value/1]).
+
+%% @doc create a dealer
+play_game() -&gt;
+  spawn(game, dealer, []).
+
+dealer() -&gt;
+  random:seed(now()),
+  DealerPid = self(),
+  Deck = cards:shuffle(cards:make_deck()),
+  {P1Cards, P2Cards} = lists:split(trunc(length(Deck) / 2), Deck),
+  io:format("About to spawn players each with ~p cards.~n",
+    [trunc(length(Deck) / 2)]),
+  P1 = spawn(game, player, [DealerPid, P1Cards]),
+  P2 = spawn(game, player, [DealerPid, P2Cards]),
+  io:format("Spawned players ~p and ~p~n", [P1, P2]),
+  dealer([P1, P2], pre_battle, [], [], 0, []).
+
+%% The dealer has to keep track of the players' process IDs,
+%% the cards they have given to the dealer for comparison,
+%% how many players have responded (0, 1, or 2), and the pile
+%% in the middle of the table in case of a war.
+
+dealer(Pids, State, P1Cards, P2Cards, Count, Pile) -&gt;
+  [P1, P2] = Pids,
+  NCards = if
+    Pile == []  -&gt; 1;
+    Pile /= [] -&gt; 3
+  end,
+  case State of
+    pre_battle -&gt;
+      P1 ! {give_cards, NCards},
+      P2 ! {give_cards, NCards},
+      dealer(Pids, await_battle, P1Cards, P2Cards, Count, Pile);
+    await_battle -&gt;
+      receive
+        {accept, Pid, Data} -&gt;
+          NextCount = Count + 1,
+          case Pid of
+            P1 -&gt; Next_P1Cards = Data, Next_P2Cards = P2Cards;
+            P2 -&gt; Next_P1Cards = P1Cards, Next_P2Cards = Data
+          end
+      end,
+      if
+        NextCount == 2 -&gt; NextState = check_cards;
+        NextCount /= 2 -&gt; NextState = State
+      end,
+      dealer(Pids, NextState, Next_P1Cards, Next_P2Cards,
+        NextCount, Pile);
+    check_cards -&gt;
+      Winner = game_winner(P1Cards, P2Cards),
+      case Winner of
+        0 -&gt;
+          io:format("Compare ~p to ~p~n", [P1Cards, P2Cards]),
+          NewPile = Pile ++ P1Cards ++ P2Cards,
+          case battle_winner(P1Cards, P2Cards) of
+             0 -&gt; dealer(Pids, pre_battle, [], [], 0, NewPile);
+             1 -&gt;
+              P1 ! {take_cards, NewPile},
+              dealer(Pids, await_confirmation, [], [], 0, []);
+             2 -&gt;
+              P2 ! {take_cards, NewPile},
+              dealer(Pids, await_confirmation, [], [], 0, [])
+           end;
+        3 -&gt;
+          io:format("It's a draw!~n"),
+          end_game(Pids);
+        _ -&gt;
+          io:format("Player ~p wins~n", [Winner]),
+          end_game(Pids)
+      end;
+    await_war-&gt;
+      io:format("Awaiting war~n");
+    await_confirmation -&gt;
+      io:format("Awaiting confirmation of player receiving cards~n"),
+      receive
+        {confirmed, _Pid, _Data} -&gt;
+        dealer(Pids, pre_battle, [], [], 0, [])
+      end
+  end.
+
+end_game(Pids) -&gt;
+  lists:foreach(fun(Process) -&gt; exit(Process, kill) end, Pids),
+  io:format("Game finished.~n").
+
+%% Do we have a winner? If both players are out of cards,
+%% it's a draw. If one player is out of cards, the other is the winner.
+
+game_winner([], []) -&gt; 3;
+game_winner([], _) -&gt; 2;
+game_winner(_, []) -&gt; 1;
+game_winner(_, _) -&gt; 0.
+
+battle_winner(P1Cards, P2Cards) -&gt;
+  V1 = value(hd(lists:reverse(P1Cards))),
+  V2 = value(hd(lists:reverse(P2Cards))),
+  Winner = if
+    V1 &gt; V2 -&gt; 1;
+    V2 &gt; V1 -&gt; 2;
+    V1 == V2 -&gt; 0
+  end,
+  io:format("Winner of ~p vs. ~p is ~p~n", [V1, V2, Winner]),
+  Winner = Winner.
+
+player(Dealer, Hand) -&gt;
+  receive
+    {Command, Data} -&gt;
+      case Command of
+        give_cards -&gt;
+          {ToSend, NewHand} = give_cards(Hand, Data),
+          io:format("Sending ~p to ~p~n", [ToSend, Dealer]),
+          Dealer!{accept, self(), ToSend};
+        take_cards -&gt;
+          io:format("~p now has ~p (cards)~n", [self(),
+            length(Data) + length(Hand)]),
+          NewHand = Hand ++ Data,
+          Dealer!{confirmed, self(), []}
+      end
+  end,
+  player(Dealer, NewHand).
+
+%% Player gives N cards from current Hand. N is 1 or 3,
+%% depending if there is a war or not.
+%% If a player is asked for 3 cards but doesn't have enough,
+%% give all the cards in the hand.
+%% This function returns a tuple: {[cards to send], [remaining cards in hand]}
+
+give_cards([], _N) -&gt; {[],[]};
+give_cards([A], _N) -&gt; {[A],[]};
+give_cards([A, B], N) -&gt;
+  if
+    N == 1 -&gt; {[A], [B]};
+    N == 3 -&gt; {[A, B], []}
+  end;
+give_cards(Hand, N) -&gt;
+  if
+    N == 1 -&gt; {[hd(Hand)], tl(Hand)};
+    N == 3 -&gt;
+      [A, B, C | Remainder] = Hand,
+      {[A, B, C], Remainder}
+  end.
+
+%% @doc Returns the value of a card. Aces are high; K &gt; Q &gt; J
+-spec(value({cards:card()}) -&gt; integer()).
+
+value({V, _Suit}) -&gt;
+  if
+    is_integer(V) -&gt; V;
+    is_list(V) -&gt;
+      case hd(V) of
+        $J -&gt; 11;
+        $Q -&gt; 12;
+        $K -&gt; 13;
+        $A -&gt; 14
+      end
+  end.</pre>
+</section>
+
+
+</section>
+
+
+
+
+
+
+<section class="sect1" data-type="sect1" id="SOLUTION09-ET01">
+<h1>Solution 9-1</h1>
+<p>Here is a suggested solution for
+<a data-type="xref" href="#CH09-ET01">Étude 9-1</a>.</p>
+
+
+
+
+<section class="sect2" data-type="sect2" id="__code_stats_erl_code_5">
+<h2><code>stats.erl</code></h2>
+<pre data-type="programlisting" class="programlisting" data-code-language="erlang">%% @author J D Eisenberg &lt;jdavid.eisenberg@gmail.com&gt;
+%% @doc Functions for calculating basic statistics on a list of numbers.
+%% @copyright 2013 J D Eisenberg
+%% @version 0.1
+
+-module(stats).
+-export([minimum/1, maximum/1, range/1, mean/1, stdv/1, stdv_sums/2]).
+
+%% @doc Returns the minimum item in a list of numbers. Uses
+%% try/catch to return an error when there's an empty list,
+%% as there's nothing reasonable to return.
+
+-spec(minimum(list()) -&gt; number()).
+
+minimum(NumberList) -&gt;
+  try minimum(NumberList, hd(NumberList)) of
+    Answer -&gt; Answer
+  catch
+    error:Error -&gt; {error, Error}
+  end.
+
+minimum([], Result) -&gt; Result;
+
+minimum([Head|Tail], Result) -&gt;
+  case Head &lt; Result of
+    true -&gt; minimum(Tail, Head);
+    false -&gt; minimum(Tail, Result)
+  end.
+
+%% @doc Returns the maximum item in a list of numbers. Catches
+%% errors when given an empty list.
+
+-spec(maximum(list()) -&gt; number()).
+
+maximum(NumberList) -&gt;
+  try
+    maximum(NumberList, hd(NumberList))
+  catch
+    error:Error-&gt; {error, Error}
+  end.
+
+maximum([], Result) -&gt; Result;
+
+maximum([Head|Tail], Result) -&gt;
+  case Head &gt; Result of
+    true -&gt; maximum(Tail, Head);
+    false -&gt; maximum(Tail, Result)
+  end.
+
+%% @doc Return the range (maximum and minimum) of a list of numbers
+%% as a two-element list.
+-spec(range(list()) -&gt; list()).
+
+range(NumberList) -&gt; [minimum(NumberList), maximum(NumberList)].
+
+%% @doc Return the mean of the list.
+-spec(mean(list()) -&gt; float()).
+
+mean(NumberList) -&gt;
+  try
+    Sum = lists:foldl(fun(V, A) -&gt; V + A end, 0, NumberList),
+    Sum / length(NumberList)
+  catch
+    error:Error -&gt; {error, Error}
+  end.
+
+%% @doc Helper function to generate sums and sums of squares
+%% when calculating standard deviation.
+
+-spec(stdv_sums(number(),[number()]) -&gt; [number()]).
+
+stdv_sums(Value, Accumulator) -&gt;
+  [Sum, SumSquares] = Accumulator,
+  [Sum + Value, SumSquares + Value * Value].
+
+%% @doc Calculate the standard deviation of a list of numbers.
+
+-spec(stdv([number()]) -&gt; float()).
+
+stdv(NumberList) -&gt;
+  N = length(NumberList),
+  try
+    [Sum, SumSquares] = lists:foldl(fun stdv_sums/2, [0, 0], NumberList),
+    math:sqrt((N * SumSquares - Sum * Sum) / (N * (N - 1)))
+  catch
+    error:Error -&gt; {error, Error}
+  end.
+</pre>
+</section>
+
+
+</section>
+
+
+
+
+
+
+<section class="sect1" data-type="sect1" id="SOLUTION09-ET02">
+<h1>Solution 9-2</h1>
+<p>Here is a suggested solution for
+<a data-type="xref" href="#CH09-ET02">Étude 9-2</a>.</p>
+
+
+
+
+<section class="sect2" data-type="sect2" id="__code_bank_erl_code">
+<h2><code>bank.erl</code></h2>
+<pre data-type="programlisting" class="programlisting" data-code-language="erlang">%% @author J D Eisenberg &lt;jdavid.eisenberg@gmail.com&gt;
+%% @doc Implement a bank account that logs its transactions.
+%% @copyright 2013 J D Eisenberg
+%% @version 0.1
+
+-module(bank).
+-export([account/1]).
+
+-spec(account(number()) -&gt; number()).
+
+%% @doc create a client and give it a starting balance
+
+account(Balance) -&gt;
+  Input = io:get_line("D)eposit, W)ithdraw, B)alance, Q)uit: "),
+  Action = hd(Input),
+
+  case Action of
+    $D -&gt;
+      Amount = get_number("Amount to deposit: "),
+      NewBalance = transaction(deposit, Balance, Amount);
+    $W -&gt;
+      Amount = get_number("Amount to withdraw: "),
+      NewBalance = transaction(withdraw, Balance, Amount);
+    $B -&gt;
+      NewBalance = transaction(balance, Balance);
+    $Q -&gt;
+      NewBalance = Balance;
+    _ -&gt;
+      io:format("Unknown command ~c~n", [Action]),
+      NewBalance = Balance
+  end,
+  if
+    Action /= $Q -&gt;
+    account(NewBalance);
+    true -&gt; true
+  end.
+
+
+%% @doc Present a prompt and get a number from the
+%% user. Allow either integers or floats.
+get_number(Prompt) -&gt;
+  Str = io:get_line(Prompt),
+  {Test, _} = string:to_float(Str),
+  case Test of
+    error -&gt; {N, _} = string:to_integer(Str);
+    _ -&gt; N = Test
+  end,
+  N.
+
+transaction(Action, Balance, Amount) -&gt;
+  case Action of
+    deposit -&gt;
+      if
+        Amount &gt;= 10000 -&gt;
+          error_logger:warning_msg("Excessive deposit ~p~n", [Amount]),
+          io:format("Your deposit of $~p may be subject to hold.", [Amount]),
+          io:format("Your new balance is ~p~n", [Balance + Amount]),
+          NewBalance = Balance + Amount;
+        Amount &lt; 0 -&gt;
+          error_logger:error_msg("Negative deposit amount ~p~n", [Amount]),
+          io:format("Deposits may not be less than zero."),
+          NewBalance = Balance;
+        Amount &gt;= 0 -&gt;
+          error_logger:info_msg("Successful deposit ~p~n", [Amount]),
+          NewBalance = Balance + Amount,
+          io:format("Your new balance is ~p~n", [NewBalance])
+      end;
+    withdraw -&gt;
+      if
+        Amount &gt; Balance -&gt;
+          error_logger:error_msg("Overdraw ~p from balance ~p~n", [Amount,
+            Balance]),
+          io:format("You cannot withdraw more than your current balance of ~p.~n",
+            [Balance]),
+          NewBalance = Balance;
+        Amount &lt; 0 -&gt;
+          error_logger:error_msg("Negative withdrawal amount ~p~n", [Amount]),
+          io:format("Withdrawals may not be less than zero."),
+          NewBalance = Balance;
+        Amount &gt;= 0 -&gt;
+          error_logger:info_msg("Successful withdrawal ~p~n", [Amount]),
+          NewBalance = Balance - Amount,
+          io:format("Your new balance is ~p~n", [NewBalance])
+      end
+  end,
+  NewBalance.
+
+transaction(balance, Balance) -&gt;
+  error_logger:info_msg("Balance inquiry ~p~n", [Balance]),
+  Balance.
+
+
+</pre>
+</section>
+
+
+</section>
+
+
+
+
+
+
+<section class="sect1" data-type="sect1" id="SOLUTION10-ET01">
+<h1>Solution 10-1</h1>
+<p>Here is a suggested solution for
+<a data-type="xref" href="#CH10-ET01">Étude 10-1</a>.</p>
+
+
+
+
+<section class="sect2" data-type="sect2" id="__code_phone_records_hrl_code">
+<h2><code>phone_records.hrl</code></h2>
+<pre data-type="programlisting" class="programlisting" data-code-language="erlang">-record(phone_call,
+  {phone_number, start_date, start_time, end_date, end_time}).
+</pre>
+</section>
+
+
+
+
+
+
+<section class="sect2" data-type="sect2" id="__code_phone_ets_erl_code">
+<h2><code>phone_ets.erl</code></h2>
+<pre data-type="programlisting" class="programlisting" data-code-language="erlang">%% @author J D Eisenberg &lt;jdavid.eisenberg@gmail.com&gt;
+%% @doc Read in a database of phone calls
+%% @copyright 2013 J D Eisenberg
+%% @version 0.1
+
+-module(phone_ets).
+-export([setup/1, summary/0, summary/1]).
+-include("phone_records.hrl").
+
+%% @doc Create an ets table of phone calls from the given file name.
+
+-spec(setup(string()) -&gt; atom()).
+
+setup(FileName) -&gt;
+
+  %% If the table exists, delete it
+  case ets:info(call_table) of
+    undefined -&gt; false;
+    _ -&gt; ets:delete(call_table)
+   end,
+
+  %% and create it anew
+  ets:new(call_table, [named_table, bag,
+    {keypos, #phone_call.phone_number}]),
+
+  {ResultCode, InputFile} = file:open(FileName, [read]),
+  case ResultCode of
+    ok -&gt; read_item(InputFile);
+    _ -&gt; io:format("Error opening file: ~p~n", [InputFile])
+  end.
+
+%% Read a line from the input file, and insert its contents into
+%% the call_table. This function is called recursively until end of file
+
+-spec(read_item(file:io_device()) -&gt; atom()).
+
+read_item(InputFile) -&gt;
+  RawData = io:get_line(InputFile, ""),
+  if
+    is_list(RawData) -&gt;
+      Data = string:strip(RawData, right, $\n),
+      [Number, SDate, STime, EDate, ETime] =
+        re:split(Data, ",", [{return, list}]),
+      ets:insert(call_table, #phone_call{phone_number = Number,
+        start_date = to_date(SDate), start_time = to_time(STime),
+        end_date = to_date(EDate), end_time= to_time(ETime)}),
+      read_item(InputFile);
+    RawData == eof -&gt; ok
+  end.
+
+%% @doc Convert a string in form "yyyy-mm-dd" to a tuple {yyyy, mm, dd}
+%% suitable for use with the calendar module.
+
+-spec(to_date(string()) -&gt; {integer(), integer(), integer()}).
+
+to_date(Date) -&gt;
+  [Year, Month, Day] = re:split(Date, "-", [{return, list}]),
+  [{Y, _}, {M, _}, {D, _}] = lists:map(fun string:to_integer/1,
+    [Year, Month, Day]),
+  {Y, M, D}.
+
+%% @doc Convert a string in form "hh:mm:ss" to a tuple {hh, mm, ss}
+%% suitable for use with the calendar module.
+
+-spec(to_time(string()) -&gt; {integer(), integer(), integer()}).
+
+to_time(Time) -&gt;
+  [Hour, Minute, Second] = re:split(Time, ":", [{return, list}]),
+  [{H, _}, {M, _}, {S, _}] = lists:map(fun string:to_integer/1,
+    [Hour, Minute, Second]),
+  {H, M, S}.
+
+%% @doc Create a summary of number of minutes used by all phone numbers.
+
+-spec(summary() -&gt; [tuple(string(), integer())]).
+
+summary() -&gt;
+  FirstKey = ets:first(call_table),
+  summary(FirstKey, []).
+
+summary(Key, Result) -&gt;
+  NextKey = ets:next(call_table, Key),
+  case NextKey of
+    '$end_of_table' -&gt; Result;
+    _ -&gt; summary(NextKey, [hd(summary(Key)) | Result])
+  end.
+
+%% @doc Create a summary of number of minutes used by one phone number.
+
+-spec(summary(string()) -&gt; [tuple(string(), integer())]).
+
+summary(PhoneNumber) -&gt;
+  Calls = ets:lookup(call_table, PhoneNumber),
+  Total = lists:foldl(fun subtotal/2, 0, Calls),
+  [{PhoneNumber, Total}].
+
+subtotal(Item, Accumulator) -&gt;
+  StartSeconds = calendar:datetime_to_gregorian_seconds(
+    {Item#phone_call.start_date, Item#phone_call.start_time}),
+  EndSeconds = calendar:datetime_to_gregorian_seconds(
+    {Item#phone_call.end_date, Item#phone_call.end_time}),
+  Accumulator + ((EndSeconds - StartSeconds + 59) div 60).
+</pre>
+</section>
+
+
+
+
+
+
+<section class="sect2" data-type="sect2" id="__code_generate_calls_erl_code">
+<h2><code>generate_calls.erl</code></h2>
+<pre data-type="programlisting" class="programlisting" data-code-language="erlang">%% @author J D Eisenberg &lt;jdavid.eisenberg@gmail.com&gt;
+%% @doc Generate a random set of data for phone calls
+%% @copyright 2013 J D Eisenberg
+%% @version 0.1
+
+-module(generate_calls).
+-export([make_call_list/1, format_date/1, format_time/1]).
+
+make_call_list(N) -&gt;
+  Now = calendar:datetime_to_gregorian_seconds({{2013, 3, 10}, {9, 0, 0}}),
+  Numbers = [
+    {"213-555-0172", Now},
+    {"301-555-0433", Now},
+    {"415-555-7871", Now},
+    {"650-555-3326", Now},
+    {"729-555-8855", Now},
+    {"838-555-1099", Now},
+    {"946-555-9760", Now}
+  ],
+  CallList = make_call_list(N, Numbers, []),
+  {Result, OutputFile} = file:open("call_list.csv", [write]),
+  case Result of
+    ok -&gt; write_item(OutputFile, CallList);
+    error -&gt; io:format("Error: ~p~n", OutputFile)
+  end.
+
+make_call_list(0, _Numbers, Result) -&gt; lists:reverse(Result);
+
+make_call_list(N, Numbers, Result) -&gt;
+  Entry = random:uniform(length(Numbers)),
+  {Head, Tail} = lists:split(Entry - 1, Numbers),
+  {Number, LastCall} = hd(Tail),
+  StartCall = LastCall + random:uniform(120) + 20,
+  Duration = random:uniform(180) + 40,
+  EndCall = StartCall + Duration,
+  Item = [Number, format_date(StartCall), format_time(StartCall),
+    format_date(EndCall), format_time(EndCall)],
+  UpdatedNumbers = Head ++ [{Number, EndCall} | tl(Tail)],
+  make_call_list(N - 1, UpdatedNumbers, [Item | Result]).
+
+write_item(OutputFile, []) -&gt;
+  file:close(OutputFile);
+
+write_item(OutputFile, [H|T]) -&gt;
+  io:format("~s ~s ~s ~s ~s~n", H),
+  io:fwrite(OutputFile, "~s,~s,~s,~s,~s~n", H),
+  write_item(OutputFile, T).
+
+format_date(GSeconds) -&gt;
+  {Date, _Time} = calendar:gregorian_seconds_to_datetime(GSeconds),
+  {Y, M, D} = Date,
+  lists:flatten(io_lib:format("~4b-~2..0b-~2..0b", [Y, M, D])).
+
+format_time(GSeconds) -&gt;
+  {_Date, Time} = calendar:gregorian_seconds_to_datetime(GSeconds),
+  {M, H, S} = Time,
+  lists:flatten(io_lib:format("~2..0b:~2..0b:~2..0b", [M, H, S])).
+</pre>
+</section>
+
+
+</section>
+
+
+
+
+
+
+<section class="sect1" data-type="sect1" id="SOLUTION10-ET02">
+<h1>Solution 10-2</h1>
+<p>Here is a suggested solution for
+<a data-type="xref" href="#CH10-ET02">Étude 10-2</a>.</p>
+
+
+
+
+<section class="sect2" data-type="sect2" id="__code_phone_records_hrl_code_2">
+<h2><code>phone_records.hrl</code></h2>
+<pre data-type="programlisting" class="programlisting" data-code-language="erlang">-record(phone_call,
+  {phone_number, start_date, start_time, end_date, end_time}).
+-record(customer,
+  {phone_number, last_name, first_name, middle_name, rate}).</pre>
+</section>
+
+
+
+
+
+
+<section class="sect2" data-type="sect2" id="__code_phone_mnesia_erl_code">
+<h2><code>phone_mnesia.erl</code></h2>
+<pre data-type="programlisting" class="programlisting" data-code-language="erlang">%% @author J D Eisenberg &lt;jdavid.eisenberg@gmail.com&gt;
+%% @doc Read in a database of phone calls and customers.
+%% @copyright 2013 J D Eisenberg
+%% @version 0.1
+
+-module(phone_mnesia).
+-export([setup/2, summary/3]).
+-include("phone_records.hrl").
+-include_lib("stdlib/include/qlc.hrl").
+
+%% @doc Set up Mnesia tables for phone calls and customers
+%% given their file names
+
+-spec(setup(string(), string()) -&gt; atom()).
+
+setup(CallFileName, CustomerFileName) -&gt;
+
+  mnesia:create_schema([node()]),
+  mnesia:start(),
+  mnesia:delete_table(phone_call),
+  mnesia:delete_table(customer),
+
+  fill_table(phone_call, CallFileName, fun add_call/1,
+    record_info(fields, phone_call), bag),
+  fill_table(customer, CustomerFileName, fun add_customer/1,
+    record_info(fields, customer), set).
+
+%% @doc Fill the given table with data from given file name.
+%% AdderFunction assigns data to fields and writes it to the table;
+%% RecordInfo is used when creating the table, as is the TableType.
+
+fill_table(TableName, FileName, AdderFunction, RecordInfo, TableType) -&gt;
+  mnesia:create_table(TableName, [{attributes, RecordInfo}, {type, TableType}]),
+
+  {OpenResult, InputFile} = file:open(FileName, [read]),
+  case OpenResult of
+    ok -&gt;
+      mnesia:transaction(
+        fun() -&gt; read_file(InputFile, AdderFunction) end);
+    _ -&gt; io:format("Error opening file: ~p~n", [FileName])
+  end.
+
+%% @doc Read a line from InputFile, and insert its contents into
+%% the appropriate table by using AdderFunction.
+
+-spec(read_file(file:io_device(), function()) -&gt; atom()).
+
+read_file(InputFile, AdderFunction) -&gt;
+  RawData = io:get_line(InputFile, ""),
+  if
+    is_list(RawData) -&gt;
+      Data = string:strip(RawData, right, $\n),
+      ItemList = re:split(Data, ",", [{return, list}]),
+      AdderFunction(ItemList),
+      read_file(InputFile, AdderFunction);
+    RawData == eof -&gt; ok
+  end.
+
+
+%% Add a phone call record; the data is in an ItemList.
+
+-spec(add_call(list()) -&gt; undefined).
+
+add_call(ItemList) -&gt;
+  [Number, SDate, STime, EDate, ETime] = ItemList,
+  mnesia:write(#phone_call{phone_number = Number,
+        start_date = to_date(SDate), start_time = to_time(STime),
+        end_date = to_date(EDate), end_time= to_time(ETime)}).
+
+%% Add a customer record; the data is in an ItemList.
+
+-spec(add_customer(list()) -&gt; undefined).
+
+add_customer(ItemList) -&gt;
+  [Phone, Last, First, Middle, Rate] = ItemList,
+  mnesia:write(#customer{phone_number = Phone, last_name = Last,
+    first_name = First, middle_name = Middle, rate = to_float(Rate)}).
+
+%% @doc Convert a string in form "yyyy-mm-dd" to a tuple {yyyy, mm, dd}
+%% suitable for use with the calendar module.
+
+-spec(to_date(string()) -&gt; {integer(), integer(), integer()}).
+
+to_date(Date) -&gt;
+  [Year, Month, Day] = re:split(Date, "-", [{return, list}]),
+  [{Y, _}, {M, _}, {D, _}] = lists:map(fun string:to_integer/1,
+    [Year, Month, Day]),
+  {Y, M, D}.
+
+%% @doc Convert a string in form "hh:mm:ss" to a tuple {hh, mm, ss}
+%% suitable for use with the calendar module.
+
+-spec(to_time(string()) -&gt; {integer(), integer(), integer()}).
+
+to_time(Time) -&gt;
+  [Hour, Minute, Second] = re:split(Time, ":", [{return, list}]),
+  [{H, _}, {M, _}, {S, _}] = lists:map(fun string:to_integer/1,
+    [Hour, Minute, Second]),
+  {H, M, S}.
+
+
+%% @doc Convenience routine to convert a string to float.
+%% In case of an error, return zero.
+
+-spec(to_float(string()) -&gt; float()).
+
+to_float(Str) -&gt;
+  {FPart, _} = string:to_float(Str),
+  case FPart of
+    error -&gt; 0;
+    _ -&gt; FPart
+  end.
+
+summary(Last, First, Middle) -&gt;
+
+  QHandle = qlc:q([Customer ||
+    Customer &lt;- mnesia:table(customer),
+    Customer#customer.last_name == Last,
+    Customer#customer.first_name == First,
+    Customer#customer.middle_name == Middle ]),
+
+  {_Result, [ThePerson|_]} =
+    mnesia:transaction(fun() -&gt; qlc:e(QHandle) end),
+
+  {_Result, Calls} = mnesia:transaction(
+    fun() -&gt;
+       qlc:e(
+        qlc:q( [Call ||
+          Call &lt;- mnesia:table(phone_call),
+          QCustomer &lt;- QHandle,
+          QCustomer#customer.phone_number == Call#phone_call.phone_number
+        ]
+        )
+      )
+    end
+  ),
+
+  TotalMinutes = lists:foldl(fun subtotal/2, 0, Calls),
+
+  [{ThePerson#customer.phone_number,
+    TotalMinutes, TotalMinutes * ThePerson#customer.rate}].
+
+subtotal(Item, Accumulator) -&gt;
+  StartSeconds = calendar:datetime_to_gregorian_seconds(
+    {Item#phone_call.start_date, Item#phone_call.start_time}),
+  EndSeconds = calendar:datetime_to_gregorian_seconds(
+    {Item#phone_call.end_date, Item#phone_call.end_time}),
+  Accumulator + ((EndSeconds - StartSeconds + 59) div 60).
+</pre>
+</section>
+
+
+
+
+
+
+<section class="sect2" data-type="sect2" id="__code_pet_records_hrl_code">
+<h2><code>pet_records.hrl</code></h2>
+<pre data-type="programlisting" class="programlisting" data-code-language="erlang">-record(person,
+  {id_number, name, age, gender, city, amount_owed}).
+-record(animal,
+  {id_number, name, species, gender, owner_id}).
+</pre>
+</section>
+
+
+
+
+
+
+<section class="sect2" data-type="sect2" id="__code_pet_mnesia_erl_code">
+<h2><code>pet_mnesia.erl</code></h2>
+<pre data-type="programlisting" class="programlisting" data-code-language="erlang">%% @author J D Eisenberg &lt;jdavid.eisenberg@gmail.com&gt;
+%% @doc Read in a database of people and their pets
+%% appointments.
+%% @copyright 2013 J D Eisenberg
+%% @version 0.1
+
+-module(pet_mnesia).
+-export([setup/2, get_info/0, get_info_easier/0]).
+-include("pet_records.hrl").
+-include_lib("stdlib/include/qlc.hrl").
+
+%% @doc Set up Mnesia tables for phone calls and customers
+%% given their file names
+
+-spec(setup(string(), string()) -&gt; atom()).
+
+setup(PersonFileName, AnimalFileName) -&gt;
+
+  mnesia:create_schema([node()]),
+  mnesia:start(),
+  mnesia:delete_table(person),
+  mnesia:delete_table(animal),
+
+  fill_table(person, PersonFileName, fun add_person/1,
+    record_info(fields, person), set),
+  fill_table(animal, AnimalFileName, fun add_animal/1,
+    record_info(fields, animal), set).
+
+%% @doc Fill the given table with data from given file name.
+%% AdderFunction assigns data to fields and writes it to the table;
+%% RecordInfo is used when creating the table, as is the TableType.
+
+fill_table(TableName, FileName, AdderFunction, RecordInfo, TableType) -&gt;
+  mnesia:create_table(TableName, [{attributes, RecordInfo}, {type, TableType}]),
+
+  {OpenResult, InputFile} = file:open(FileName, [read]),
+  case OpenResult of
+    ok -&gt;
+      TransResult = mnesia:transaction(
+        fun() -&gt; read_file(InputFile, AdderFunction) end),
+        io:format("Transaction result ~p~n", [TransResult]);
+    _ -&gt; io:format("Error opening file: ~p~n", [FileName])
+  end.
+
+%% @doc Read a line from InputFile, and insert its contents into
+%% the appropriate table by using AdderFunction.
+
+-spec(read_file(file:io_device(), function()) -&gt; atom()).
+
+read_file(InputFile, AdderFunction) -&gt;
+  RawData = io:get_line(InputFile, ""),
+  if
+    is_list(RawData) -&gt;
+      Data = string:strip(RawData, right, $\n),
+      ItemList = re:split(Data, ",", [{return, list}]),
+      AdderFunction(ItemList),
+      read_file(InputFile, AdderFunction);
+    RawData == eof -&gt; ok
+  end.
+
+
+%% Add a person record; the data is in an ItemList.
+
+-spec(add_person(list()) -&gt; undefined).
+
+add_person(ItemList) -&gt;
+  [Id, Name, Age, Gender, City, Owed] = ItemList,
+  mnesia:write(#person{id_number = to_int(Id), name = Name,
+    age = to_int(Age), gender = Gender, city = City,
+    amount_owed = to_float(Owed)}).
+
+%% Add an animal record; the data is in an ItemList.
+
+-spec(add_animal(list()) -&gt; undefined).
+
+add_animal(ItemList) -&gt;
+  [Id, Name, Species, Gender, Owner] = ItemList,
+  mnesia:write(#animal{id_number = to_int(Id),
+    name = Name, species = Species, gender = Gender,
+    owner_id = to_int(Owner)}).
+
+%% @doc Convenience routine to convert a string to integer.
+%% In case of an error, return zero.
+
+-spec(to_int(string()) -&gt; integer()).
+
+to_int(Str) -&gt;
+  {IPart, _} = string:to_integer(Str),
+  case IPart of
+    error -&gt; 0;
+    _ -&gt; IPart
+  end.
+
+%% @doc Convenience routine to convert a string to float.
+%% In case of an error, return zero.
+
+-spec(to_float(string()) -&gt; float()).
+
+to_float(Str) -&gt;
+  {FPart, _} = string:to_float(Str),
+  case FPart of
+    error -&gt; 0;
+    _ -&gt; FPart
+  end.
+
+get_info() -&gt;
+  People = mnesia:transaction(
+    fun() -&gt; qlc:e(
+      qlc:q( [ P ||
+        P &lt;- mnesia:table(person),
+        P#person.age &gt;= 21,
+        P#person.gender == "M",
+        P#person.city == "Podunk"]
+        )
+      )
+    end
+  ),
+
+  Pets = mnesia:transaction(
+    fun() -&gt; qlc:e(
+      qlc:q( [{A#animal.name, A#animal.species, P#person.name} ||
+        P &lt;- mnesia:table(person),
+        P#person.age &gt;= 21,
+        P#person.gender == "M",
+        P#person.city == "Podunk",
+        A &lt;- mnesia:table(animal),
+        A#animal.owner_id == P#person.id_number])
+      )
+    end
+  ),
+  [People, Pets].
+
+get_info_easier() -&gt;
+
+  %% "Pre-process" the list comprehension for finding people
+
+  QHandle = qlc:q( [ P ||
+    P &lt;- mnesia:table(person),
+    P#person.age &gt;= 21,
+    P#person.gender == "M",
+    P#person.city == "Podunk"]
+  ),
+
+  %% Evaluate it to retrieve the people you want
+
+  People = mnesia:transaction(
+    fun() -&gt; qlc:e( QHandle ) end
+  ),
+
+  %% And use the handle again when retrieving
+  %% information about their pets
+
+  Pets = mnesia:transaction(
+    fun() -&gt; qlc:e(
+      qlc:q( [{A#animal.name, A#animal.species, P#person.name} ||
+        P &lt;- QHandle,
+        A &lt;- mnesia:table(animal),
+        A#animal.owner_id == P#person.id_number])
+      )
+    end
+  ),
+  [People, Pets].
+
+
+</pre>
+</section>
+
+
+</section>
+
+
+
+
+
+
+<section class="sect1" data-type="sect1" id="SOLUTION11-ET01">
+<h1>Solution 11-1</h1>
+<p>Here is a suggested solution for
+<a data-type="xref" href="#CH11-ET01">Étude 11-1</a>.</p>
+
+
+
+
+<section class="sect2" data-type="sect2" id="__code_weather_erl_code">
+<h2><code>weather.erl</code></h2>
+<pre data-type="programlisting" class="programlisting" data-code-language="erlang">-module(weather).
+-behaviour(gen_server).
+-include_lib("xmerl/include/xmerl.hrl").
+-export([start_link/0]). % convenience call for startup
+-export([init/1,
+         handle_call/3,
+         handle_cast/2,
+         handle_info/2,
+         terminate/2,
+         code_change/3]). % gen_server callbacks
+-define(SERVER, ?MODULE). % macro that just defines this module as server
+
+%%% convenience method for startup
+start_link() -&gt;
+        gen_server:start_link({local, ?SERVER}, ?MODULE, [], []).
+
+%%% gen_server callbacks
+init([]) -&gt;
+  inets:start(),
+  {ok, []}.
+
+handle_call(Request, _From, State) -&gt;
+  {Reply, NewState} = get_weather(Request, State),
+  {reply, Reply, NewState}.
+
+handle_cast(_Message, State) -&gt;
+  io:format("Most recent requests: ~p\n", [State]),
+  {noreply, State}.
+
+handle_info(_Info, State) -&gt;
+  {noreply, State}.
+
+terminate(_Reason, _State) -&gt;
+  inets:stop(),
+  ok.
+
+code_change(_OldVsn, State, _Extra) -&gt;
+  {ok, State}.
+
+%%% Internal functions
+
+%% Given a 4-letter station code as the Request, return its basic
+%% weather information as a {key,value} list. If successful, add the
+%% station name to the State, which will keep track of recently-accessed
+%% weather stations.
+
+get_weather(Request, State) -&gt;
+  URL = "http://w1.weather.gov/xml/current_obs/" ++ Request ++ ".xml",
+  {Result, Info} = httpc:request(URL),
+  case Result of
+    error -&gt; {{Result, Info}, State};
+    ok -&gt;
+      {{_Protocol, Code, _CodeStr}, _Attrs, WebData} = Info,
+      case Code of
+        404 -&gt;
+          {{error, 404}, State};
+        200 -&gt;
+          Weather = analyze_info(WebData),
+          {{ok, Weather}, [Request | lists:sublist(State, 10)]}
+      end
+  end.
+
+%% Take raw XML data and return a set of {key, value} tuples
+
+analyze_info(WebData) -&gt;
+  %% list of fields that you want to extract
+  ToFind = [location, observation_time_rfc822, weather, temperature_string],
+
+  %% get just the parsed data from the XML parse result
+  Parsed = element(1, xmerl_scan:string(WebData)),
+
+  %% This is the list of all children under &lt;current_observation&gt;
+  Children = Parsed#xmlElement.content,
+
+  %% Find only XML elements and extract their names and their text content.
+  %% You need the guard so that you don't process the newlines in the
+  %% data (they are XML text descendants of the root element).
+  ElementList = [{El#xmlElement.name, extract_text(El#xmlElement.content)}
+    || El &lt;- Children, element(1, El) == xmlElement],
+
+  %% ElementList is now a keymap; get the data you want from it.
+  lists:map(fun(Item) -&gt; lists:keyfind(Item, 1, ElementList) end, ToFind).
+
+
+%% Given the parsed content of an XML element, return its first node value
+%% (if it's a text node); otherwise return the empty string.
+
+extract_text(Content) -&gt;
+  Item = hd(Content),
+  case element(1, Item) of
+    xmlText -&gt; Item#xmlText.value;
+    _ -&gt; ""
+  end.
+
+</pre>
+</section>
+
+
+
+
+
+
+<section class="sect2" data-type="sect2" id="__code_weather_sup_erl_code">
+<h2><code>weather_sup.erl</code></h2>
+<pre data-type="programlisting" class="programlisting" data-code-language="erlang">-module(weather_sup).
+-behaviour(supervisor).
+-export([start_link/0]). % convenience call for startup
+
+-export([init/1]). % supervisor calls
+-define(SERVER, ?MODULE).
+
+
+%%% convenience method for startup
+start_link() -&gt;
+  supervisor:start_link({local, ?SERVER}, ?MODULE, []).
+
+%%% supervisor callback
+init([]) -&gt;
+    RestartStrategy = one_for_one,
+    MaxRestarts = 1, % one restart every
+    MaxSecondsBetweenRestarts = 5, % five seconds
+
+    SupFlags = {RestartStrategy, MaxRestarts, MaxSecondsBetweenRestarts},
+
+    Restart = permanent, % or temporary, or transient
+    Shutdown = 2000, % milliseconds, could be infinity or brutal_kill
+    Type = worker, % could also be supervisor
+
+    Weather = {weather, {weather, start_link, []},
+                      Restart, Shutdown, Type, [weather]},
+
+    {ok, {SupFlags, [Weather]}}.
+</pre>
+</section>
+
+
+</section>
+
+
+
+
+
+
+<section class="sect1" data-type="sect1" id="SOLUTION11-ET02">
+<h1>Solution 11-2</h1>
+<p>Here is a suggested solution for
+<a data-type="xref" href="#CH11-ET02">Étude 11-2</a>. Since the bulk of the code
+is identical to the code in the previous étude,
+the only code shown here is the revised <code>-export</code> list
+and the added functions.</p>
+
+
+
+
+<section class="sect2" data-type="sect2" id="__code_weather_erl_code_2">
+<h2><code>weather.erl</code></h2>
+<pre data-type="programlisting" class="programlisting" data-code-language="erlang">-export([report/1, recent/0]). % wrapper functions
+
+%% Wrapper to hide internal details when getting a weather report
+report(Station) -&gt;
+  gen_server:call(?SERVER, Station).
+
+%% Wrapper to hide internal details when getting a list of recently used
+%% stations.
+recent() -&gt;
+  gen_server:cast(?SERVER, "").</pre>
+</section>
+
+
+</section>
+
+
+
+
+
+
+<section class="sect1" data-type="sect1" id="SOLUTION11-ET03">
+<h1>Solution 11-3</h1>
+<p>Here is a suggested solution for
+<a data-type="xref" href="#CH11-ET03">Étude 11-3</a>. Since the bulk of the code
+is identical to the previous étude,
+the only code shown here is the added and revised code.</p>
+<pre data-type="programlisting" class="programlisting" data-code-language="erlang">%% @doc Connect to a named server
+connect(ServerName) -&gt;
+  Result = net_adm:ping(ServerName),
+  case Result of
+    pong -&gt; io:format("Connected to server.~n");
+    pang -&gt; io:format("Cannot connect to ~p.~n", [ServerName])
+  end.
+
+%% Wrapper to hide internal details when getting a weather report
+report(Station) -&gt;
+  gen_server:call({global, weather}, Station).
+
+%% Wrapper to hide internal details when getting a list of recently used
+%% stations.
+recent() -&gt;
+  gen_server:call({global,weather}, recent).
+
+%%% convenience method for startup
+start_link() -&gt;
+  gen_server:start_link({global, ?SERVER}, ?MODULE, [], []).
+
+%%% gen_server callbacks
+init([]) -&gt;
+  inets:start(),
+  {ok, []}.
+
+handle_call(recent, _From, State) -&gt;
+  {reply, State, State};
+handle_call(Request, _From, State) -&gt;
+  {Reply, NewState} = get_weather(Request, State),
+  {reply, Reply, NewState}.
+
+handle_cast(_Message, State) -&gt;
+  io:format("Most recent requests: ~p\n", [State]),
+  {noreply, State}.</pre>
+</section>
+
+
+
+
+
+
+<section class="sect1" data-type="sect1" id="SOLUTION11-ET04">
+<h1>Solution 11-4</h1>
+<p>Here is a suggested solution for
+<a data-type="xref" href="#CH11-ET04">Étude 11-4</a>.</p>
+
+
+
+
+<section class="sect2" data-type="sect2" id="__code_chatroom_erl_code">
+<h2><code>chatroom.erl</code></h2>
+<pre data-type="programlisting" class="programlisting" data-code-language="erlang">-module(chatroom).
+-behaviour(gen_server).
+-export([start_link/0]). % convenience call for startup
+-export([init/1,
+         handle_call/3,
+         handle_cast/2,
+         handle_info/2,
+         terminate/2,
+         code_change/3]). % gen_server callbacks
+
+-define(SERVER, ?MODULE). % macro that defines this module as the server
+
+% The server state consists of a list of tuples for each person in chat.
+% Each tuple has the format {{UserName, UserServer}, PID of person}
+
+%%% convenience method for startup
+start_link() -&gt;
+  gen_server:start_link({local, ?SERVER}, ?MODULE, [], []).
+
+%%% gen_server callbacks
+init([]) -&gt;
+  {ok, []}.
+
+%% Check to see if a user name/server pair is unique;
+%% if so, add it to the server's state
+
+handle_call({login, UserName, ServerRef}, From, State) -&gt;
+  {FromPid, _FromTag} = From,
+  case lists:keymember({UserName, ServerRef}, 1, State) of
+    true -&gt;
+      NewState = State,
+      Reply = {error, "User " ++ UserName ++ " already in use."};
+    false -&gt;
+      NewState = [{{UserName, ServerRef}, FromPid} | State],
+      Reply = {ok, "Logged in."}
+  end,
+  {reply, Reply, NewState};
+
+%% Log out the person sending the message, but only
+%% if they're logged in already.
+
+handle_call(logout, From, State) -&gt;
+  {FromPid, _FromTag} = From,
+  case lists:keymember(FromPid, 2, State) of
+    true -&gt;
+      NewState = lists:keydelete(FromPid, 2, State),
+      Reply  = {ok, logged_out};
+    false -&gt;
+      NewState = State,
+      Reply = {error, not_logged_in}
+  end,
+  {reply, Reply, NewState};
+
+%% When receiving a message from a person, use the From PID to
+%% get the user's name and server name from the chatroom server state.
+%% Send the message via a "cast" to everyone who is NOT the sender.
+
+handle_call({say, Text}, From, State) -&gt;
+  {FromPid, _FromTag} = From,
+
+  case lists:keymember(FromPid, 2, State) of
+    true -&gt;
+    {value, {{SenderName, SenderServer}, _}} =
+      lists:keysearch(FromPid, 2, State),
+
+    % For debugging: get the list of recipients.
+    RecipientList = [{RecipientName, RecipientServer} ||
+      {{RecipientName, RecipientServer}, _} &lt;- State,
+      {RecipientName, RecipientServer} /= {SenderName, SenderServer}],
+    io:format("Recipient list: ~p~n", [RecipientList]),
+
+    [gen_server:cast({person, RecipientServer},
+      {message, {SenderName, SenderServer}, Text}) ||
+      {{RecipientName, RecipientServer}, _} &lt;- State,
+     RecipientName /= SenderName];
+
+    false -&gt; ok
+  end,
+  {reply, ok, State};
+
+%% Get the state of another person and return it to the asker
+
+handle_call({who, Person, ServerRef}, _From, State) -&gt;
+  % Find pid of the person at the serverref
+  Found = lists:keyfind({Person, ServerRef}, 1, State),
+
+  case Found of
+    {{_FromUser, _FromServer}, Pid} -&gt;
+      Reply = gen_server:call(Pid, get_profile);
+    _ -&gt;
+      Reply = "Cannot find that user"
+  end,
+  {reply, Reply, State};
+
+%% Return a list of all users currently in the chat room
+
+handle_call(users, _From, State) -&gt;
+  UserList = [{UserName, UserServer} ||
+    {{UserName, UserServer}, _} &lt;- State],
+  {reply, UserList, State};
+
+handle_call(Request, _From, State) -&gt;
+  {ok, {error, "Unhandled Request", Request}, State}.
+
+handle_cast(_Request, State) -&gt;
+  {noreply, State}.
+
+handle_info(Info, State) -&gt;
+  io:format("Received unknown message ~p~n", [Info]),
+  {noreply, State}.
+
+terminate(_Reason, _State) -&gt;
+  ok.
+
+code_change(_OldVsn, State, _Extra) -&gt;
+  {ok, State}.
+
+%%% Internal functions
+</pre>
+</section>
+
+
+
+
+
+
+<section class="sect2" data-type="sect2" id="__code_person_erl_code">
+<h2><code>person.erl</code></h2>
+<pre data-type="programlisting" class="programlisting" data-code-language="erlang">-module(person).
+-behaviour(gen_server).
+-export([start_link/1]). % convenience call for startup
+-export([init/1,
+         handle_call/3,
+         handle_cast/2,
+         handle_info/2,
+         terminate/2,
+         code_change/3]). % gen_server callbacks
+
+-record(state, {chat_node, profile}).
+
+% internal functions
+-export([login/1, logout/0, say/1, users/0, who/2, set_profile/2]).
+
+-define(CLIENT, ?MODULE). % macro that defines this module as the client
+
+%%% convenience method for startup
+start_link(ChatNode) -&gt;
+  gen_server:start_link({local, ?CLIENT}, ?MODULE, ChatNode, []).
+
+init(ChatNode)-&gt;
+  io:format("Chat node is: ~p~n", [ChatNode]),
+  {ok, #state{chat_node=ChatNode, profile=[]}}.
+
+%% The server is asked to either:
+%% a) return the chat host name from the state,
+%% b) return the user profile
+%% c) update the user profile
+%% d) log a user in
+%% e) send a message to all people in chat room
+%% f) log a user out
+
+handle_call(get_chat_node, _From, State) -&gt;
+  {reply, State#state.chat_node, State};
+
+handle_call(get_profile, _From, State) -&gt;
+  {reply, State#state.profile, State};
+
+handle_call({set_profile, Key, Value}, _From, State) -&gt;
+  case lists:keymember(Key, 1, State#state.profile) of
+    true -&gt; NewProfile = lists:keyreplace(Key, 1, State#state.profile,
+      {Key, Value});
+    false -&gt; NewProfile = [{Key, Value} | State#state.profile]
+  end,
+  {reply, NewProfile,
+    #state{chat_node = State#state.chat_node, profile=NewProfile}};
+
+handle_call({login, UserName}, _From, State) -&gt;
+  Reply = gen_server:call({chatroom, State#state.chat_node},
+    {login, UserName, node()}),
+  {reply, Reply, State};
+
+handle_call({say, Text}, _From, State) -&gt;
+  Reply = gen_server:call({chatroom, State#state.chat_node},
+    {say, Text}),
+  {reply, Reply, State};
+
+handle_call(logout, _From, State) -&gt;
+  Reply = gen_server:call({chatroom, State#state.chat_node}, logout),
+  {reply, Reply, State};
+
+handle_call(_, _From, State) -&gt; {ok, [], State}.
+
+handle_cast({message, {FromUser, FromServer}, Text}, State) -&gt;
+  io:format("~s (~p) says: ~p~n", [FromUser, FromServer, Text]),
+  {noreply, State};
+
+handle_cast(_Request, State) -&gt;
+  io:format("Unknown request ~p~n", _Request),
+  {noReply, State}.
+
+handle_info(Info, State) -&gt;
+  io:format("Received unexpected message: ~p~n", [Info]),
+  {noreply, State}.
+
+terminate(_Reason, _State) -&gt;
+  ok.
+
+code_change(_OldVsn, State, _Extra) -&gt;
+  {ok, State}.
+
+
+% internal functions
+
+%% @doc Gets the name of the chat host. This is a really
+%% ugly hack; it works by sending itself a call to retrieve
+%% the chat node name from the server state.
+
+get_chat_node() -&gt;
+  gen_server:call(person, get_chat_node).
+
+%% @doc Login to a server using a name
+%% If you connect, tell the server your user name and node.
+%% You don't need a reply from the server for this.
+
+-spec(login(string()) -&gt; term()).
+
+login(UserName) -&gt;
+  if
+    is_atom(UserName) -&gt;
+      gen_server:call(?CLIENT,
+        {login, atom_to_list(UserName)});
+    is_list(UserName) -&gt;
+      gen_server:call(?CLIENT,
+        {login, UserName});
+    true -&gt;
+      {error, "User name must be an atom or a list"}
+  end.
+
+
+%% @doc Log out of the system. The person server will send a From that tells
+%% who is logging out; the chatroom server doesn't need to reply.
+
+-spec(logout() -&gt; atom()).
+
+logout() -&gt;
+  gen_server:call(?CLIENT, logout),
+  ok.
+
+
+%% @doc Send the given Text to the chat room server. No reply needed.
+
+-spec(say(string()) -&gt; atom()).
+
+say(Text) -&gt;
+  gen_server:call(?CLIENT, {say, Text}),
+  ok.
+
+%% @doc Ask chat room server for a list of users.
+
+-spec(users() -&gt; [string()]).
+
+users() -&gt;
+  gen_server:call({chatroom, get_chat_node()}, users).
+
+%% @doc Ask chat room server for a profile of a given person.
+
+-spec(who(string(), atom()) -&gt; [tuple()]).
+
+who(Person, ServerRef) -&gt;
+  gen_server:call({chatroom, get_chat_node()},
+    {who, Person, ServerRef}).
+
+%% @doc Update profile with a key/value pair.
+
+-spec(set_profile(atom(), term()) -&gt; term()).
+
+set_profile(Key, Value) -&gt;
+  % ask *this* server for the current state
+  NewProfile = gen_server:call(?CLIENT, {set_profile, Key, Value}),
+  {ok, NewProfile}.</pre>
+</section>
+
+
+</section>
+
+
+
+</section>

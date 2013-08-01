@@ -1,0 +1,244 @@
+<section data-type="chapter" id="HIGHER-ORDER_FNS">
+<h1>Higher Order Functions and List Comprehensions</h1>
+<div data-type="note" class="note">
+You can learn more about working with higher order functions in Chapter 9 of <em>Erlang Programming</em>, Section 3.4 of <em>Programming Erlang</em>, Section 2.7 of <em>Erlang and OTP in Action</em>, and Chapter 6 of <em>Learn You Some Erlang For Great Good!</em>.  List comprehensions are in Chapter 9 of <em>Erlang Programming</em>, Section 3.6 of <em>Programming Erlang</em>, Section 2.9 of <em>Erlang and OTP in Action</em>, and Chapter 1 of <em>Learn You Some Erlang For Great Good!</em>.
+</div>
+
+
+
+<section class="sect1" data-type="sect1" id="CH07-ET01">
+<h1>Étude 7-1: Simple Higher Order Functions</h1>
+<p>In calculus, the derivative of a function is "a measure of how a function
+changes as its input changes"
+(<a href="http://en.wikipedia.org/wiki/Derivative">Wikipedia</a>). For example,
+if an object is traveling at a constant velocity, that velocity is the same
+from moment to moment, so the derviative is zero. If an object is falling, its
+velocity changes a little bit as the object starts falling, and then falls
+faster and faster as time goes by.</p>
+<p>You can calculate the rate of change of a function by calculating:
+<code>(F(X + Delta) - F(X)) / Delta</code>, where <code>Delta</code> is the interval
+between measurements. As Delta approaches zero, you get closer and
+closer to the true value of the derivative.</p>
+<p>Write a module named <code>calculus</code> with a function <code>derivative/2</code>. The
+first argument is the function whose derivative you wish to find, and the
+second argument is the point at which you are measuring the derivative.</p>
+<p>What should you use for a value of <code>Delta</code>? I used <code>1.0e-10</code>, as that is a small
+number that approaches zero.</p>
+<p>Here is some sample output.</p>
+<pre data-type="programlisting" class="programlisting" data-code-language="erl">1&gt; c(calculus).
+{ok,calculus}
+2&gt; F1 = fun(X) -&gt; X * X end.
+#Fun&lt;erl_eval.6.82930912&gt;
+3&gt; F1(3).
+9
+4&gt; calculus:derivative(F1, 3).
+6.000000496442226
+5&gt; calculus:derivative(fun(X) -&gt; 3 * X * X + 2 * X + 1 end, 5).
+32.00000264769187
+6&gt; calculus:derivative(fun math:sin/1, 0).
+1.0</pre>
+<ul>
+<li><p>Line 3 is a test to see if the <code>F1</code> function works.</p></li>
+<li><p>Line 5 shows that you don&#8217;t have to assign a function to a variable;
+you can define the function in line.</p></li>
+<li><p>Line 6 shows how to refer to a function in another module. You start
+with the word <code>fun</code> followed by the <code><em>module</em>:<em>function</em>/<em>arity</em></code>.</p></li>
+</ul>
+<p><a data-type="xref" href="#SOLUTION07-ET01">See a suggested solution in Appendix A.</a></p>
+</section>
+
+
+
+
+
+
+<section class="sect1" data-type="sect1" id="CH07-ET02">
+<h1>Étude 7-2: List Comprehensions and Pattern Matching</h1>
+<p>Is it possible to use pattern matching inside a list comprehension? Try
+it and find out.</p>
+<p>Presume you have this list of people&#8217;s names, genders, and ages:</p>
+<pre>People = [{"Federico", $M, 22}, {"Kim", $F, 45}, {"Hansa", $F, 30},
+{"Tran", $M, 47}, {"Cathy", $F, 32}, {"Elias", $M, 50}].</pre>
+
+
+
+
+<section class="sect2" data-type="sect2" id="_part_one">
+<h2>Part One</h2>
+<p>In <code>erl</code> (or in a module, if you prefer), write a list comprehension
+that creates a list consisting of the names of all males who are over 40.
+Use pattern matching
+to separate the tuple into three variables, and two guards to do the
+tests for age and gender.</p>
+</section>
+
+
+
+
+
+
+<section class="sect2" data-type="sect2" id="_part_two">
+<h2>Part Two</h2>
+<p>When you use multiple guards in a list comprehension, you get the moral
+equivalent of <code>and</code> for each condition you are testing. If you want an
+<code>or</code> condition, you must test it explicitly. Write a list comprehension
+that selects the names of all the people who are male <em>or</em> over 40. You
+will need one guard with an <code>or</code>; you may also use <code>orelse</code>.</p>
+<div data-type="note" class="note">
+Because <code>or</code> has higher priority than comparison operators like <code>&lt;</code> and
+<code>==</code>, an expression like <code>X &gt; 5 or X &lt; 12</code> will generate an error, as
+Erlang interprets it to mean <code>X &gt; (5 or X) &lt; 12</code>. Use parentheses to force
+the correct evaluation: <code>(X &gt; 5) or (X &lt; 12)</code>. If you use <code>orelse</code>, which
+has a lower priority than the comparison operators, you don&#8217;t need the
+parentheses, though it doesn&#8217;t hurt to have them. Another advantage of
+<code>orelse</code> is that it doesn&#8217;t do any unnecessary comparisons.
+</div>
+</section>
+
+
+</section>
+
+
+
+
+
+
+<section class="sect1" data-type="sect1" id="CH07-ET03">
+<h1>Étude 7-3: Using <code>lists:foldl/3</code></h1>
+<p>Add <code>mean/1</code> and <code>stdv/1</code> functions to the <code>stats</code> module which
+you created in <a data-type="xref" href="#CH06-02">Étude 6-2</a> to calculate the mean and
+standard deviation for a list of numbers.</p>
+<pre data-type="programlisting" class="programlisting" data-code-language="erl">1&gt; c(stats).
+{ok,stats}
+2&gt; stats:mean([7, 2, 9]).
+6.0
+3&gt; stats:stdv([7, 2, 9]).
+3.605551275463989</pre>
+<p>The formula for the mean is simple; just add up all the numbers and
+divide by the number of items in the list (which you may find by using the
+<code>length/1</code> function).Use <code>lists:foldl/3</code> to calculate the sum of the items
+in the list.</p>
+<p>The following is the algorithm for calculating
+the standard deviation. Presume that <code>N</code> is the number of items
+in the list.</p>
+<ol>
+<li><p>Add up all the numbers in the list (call this the <em>sum</em>).</p></li>
+<li><p>Add the squares of the numbers in the list (call this the <em>sum of squares</em>).</p></li>
+<li><p>Multiply <code>N</code> times the <em>sum of squares</em>.</p></li>
+<li><p>Multiply the <em>sum</em> times itself.</p></li>
+<li><p>Subtract the result of step 4 from the result of step 3.</p></li>
+<li><p>Divide the result of step 5 by <code>N * (N - 1)</code>.</p></li>
+<li><p>Take the square root of that result.</p></li>
+</ol>
+<p>Thus, if your numbers are 7, 2, and 9, <code>N</code> would be three, and
+you would do these calculations:</p>
+<ul>
+<li><p>The sum is 7 + 2 + 9, or 18.</p></li>
+<li><p>The sum of squares is 49 + 4 + 81, or 134.</p></li>
+<li><p><code>N</code> times the sum of squares is 134 * 3, or 402.</p></li>
+<li><p>The sum times itself is 18 * 18, or 324.</p></li>
+<li><p>402 - 324 is 78.</p></li>
+<li><p>78 divided by (3 * (3 - 1)) is 78 / 6, or 13.</p></li>
+<li><p>The standard deviation is the square root of 13, or 3.606.</p></li>
+</ul>
+<p>In your code, you can do steps three through seven in one arithmetic
+expression. You&#8217;d have variables in your expression rather than constants,
+of course.</p>
+<pre>math:sqrt((3 * 134 - 18 * 18)/(3 * (3 - 1))</pre>
+<p>Use <code>lists:foldl/3</code> to calculate the sum and the sum of squares.
+Bonus points if you can calculate both of them
+with one call to <code>lists:foldl/3</code>. Hint:
+the argument for the accumulator doesn&#8217;t have to be a single number. It can
+be a list or a tuple.</p>
+<p><a data-type="xref" href="#SOLUTION07-ET03">See a suggested solution in Appendix A.</a></p>
+</section>
+
+
+
+
+
+
+<section class="sect1" data-type="sect1" id="CH07-ET04">
+<h1>Étude 7-4: Using <code>lists:split/2</code></h1>
+<p>Use <code>erl -man lists</code> to see how the <code>lists:split/2</code> function works, or try
+the following example and see if you can figure it out. Experiment to see
+what happens if the first argument is zero.</p>
+<pre data-type="programlisting" class="programlisting" data-code-language="erl">1&gt; lists:split(4, [110, 220, 330, 440, 550, 660]).
+{[110,220,330,440],[550,660]}</pre>
+<p>Use <code>lists:split/2</code> and <code>lists:foldl/3</code> to rewrite the
+<code>dates:julian/1</code> function from
+<a data-type="xref" href="#CH06-03">Étude 6-3</a>. Hint: you&#8217;ll use those functions when
+calculating the total number of days up to (but not including)
+the month in question.</p>
+<p><a data-type="xref" href="#SOLUTION07-ET04">See a suggested solution in Appendix A.</a></p>
+</section>
+
+
+
+
+
+
+<section class="sect1" data-type="sect1" id="CH07-ET05">
+<h1>Étude 7-5: Multiple Generators in List Comprehensions</h1>
+<p>Back to list comprehensions. You can have more than one generator in a list
+comprehension. Try this in <code>erl</code>:</p>
+<pre data-type="programlisting" class="programlisting" data-code-language="erl">1&gt; [X * Y || X &lt;- [3, 5, 7], Y &lt;- [2, 4, 6]].
+[6,12,18,10,20,30,14,28,42]</pre>
+<p>Using what you&#8217;ve learned from this example, write a module named <code>cards</code>
+that contains a function <code>make_deck/0</code>. The function will generate a deck
+of cards as a list 52 tuples in this form:</p>
+<pre>[{"A","Clubs"},
+ {"A","Diamonds"},
+ {"A","Hearts"},
+ {"A","Spades"},
+ {2,"Clubs"},
+ {2,"Diamonds"},
+ {2,"Hearts"},
+ {2,"Spades"},
+ ...
+ {"K", "Clubs"},
+ {"K", "Diamonds"},
+ {"K", "Hearts"},
+ {"K", "Spades"}]</pre>
+<div data-type="note" class="note">
+<p>When you run this function, your output will not show the entire list; it will
+show something that ends like this. Don&#8217;t freak out.</p>
+<pre></pre>
+<p>{7,"Clubs"},
+{7,"Diamonds"},
+{7,[&#8230;]},
+{7,&#8230;},
+{&#8230;}|&#8230;]</p>
+<p>If you want to see the full list, use this function.</p>
+<pre data-type="programlisting" class="programlisting" data-code-language="erl">show_deck(Deck) -&gt;
+  lists:foreach(fun(Item) -&gt; io:format("~p~n", [Item]) end, Deck).</pre>
+</div>
+<p><a data-type="xref" href="#SOLUTION07-ET05">See a suggested solution in Appendix A.</a></p>
+</section>
+
+
+
+
+
+
+<section class="sect1" data-type="sect1" id="CH07-ET06">
+<h1>Étude 7-6: Explaining an Algorithm</h1>
+<p>You need a way to shuffle the deck of cards. This is the code for
+doing a shuffle, taken from the Literate Programs Wiki.</p>
+<pre data-type="programlisting" class="programlisting" data-code-language="erlang">shuffle(List) -&gt; shuffle(List, []).
+shuffle([], Acc) -&gt; Acc;
+shuffle(List, Acc) -&gt;
+  {Leading, [H | T]} = lists:split(random:uniform(length(List)) - 1, List),
+  shuffle(Leading ++ T, [H | Acc]).</pre>
+<p>Wait a moment. If I&#8217;ve just given you the code, what&#8217;s the purpose
+of this étude? I want you to understand the code. The object of this
+étude is to write the documentation for the algorithm.
+If you aren&#8217;t sure what the code does, try adding some
+<code>io:format</code> statements to see what is happening. If you&#8217;re totally
+stuck, <a href="http://en.literateprograms.org/Fisher-YatesShuffle_%28Erlang%29">see the explanation from Literate Programs site</a>.</p>
+<p><a data-type="xref" href="#SOLUTION07-ET06">See a suggested solution in Appendix A.</a></p>
+</section>
+
+
+
+</section>

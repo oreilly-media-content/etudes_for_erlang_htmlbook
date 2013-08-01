@@ -1,0 +1,106 @@
+<section data-type="chapter" id="ATOMS-TUPLES-PATTERNS">
+<h1>Atoms, Tuples, and Pattern Matching</h1>
+<div data-type="note" class="note">
+You can learn more about working with atoms, tuples, and pattern matching in Chapter 2 of <em>Erlang Programming</em>, Chapter 2 of <em>Programming Erlang</em>, Sections 2.2 and 2.4 of <em>Erlang and OTP in Action</em>, and Chapters 1 and 3 of <em>Learn You Some Erlang For Great Good!</em>.
+</div>
+
+
+
+<section class="sect1" data-type="sect1" id="CH03-ET01">
+<h1>Étude 3-1: Pattern Matching</h1>
+<p>Use atoms and pattern matching to make your <code>area</code> function calculate the
+area of a rectangle, triangle, or ellipse.  If your parameters are
+<code>Shape</code>, <code>A</code> and <code>B</code>, the area for the atom <code>rectangle</code> is <code>A * B</code>,
+where <code>A</code> and <code>B</code> represent the length and width. For a <code>triangle</code> atom,
+the area is <code>A * B / 2.0</code>, with <code>A</code> and <code>B</code> representing
+the base and height of the triangle. For an <code>ellipse</code> atom, the area is
+<code>math:pi() * A * B</code>, where <code>A</code> and <code>B</code> represent the major and minor radiuses.</p>
+<p>Here is some sample output.</p>
+<pre data-type="programlisting" class="programlisting" data-code-language="erl">1&gt; c(geom).
+{ok,geom}
+2&gt; geom:area(rectangle, 3, 4).
+12
+3&gt; geom:area(triangle, 3, 5).
+7.5
+4&gt; geom:area(ellipse, 2, 4).
+25.132741228718345</pre>
+<p><a data-type="xref" href="#SOLUTION03-ET01">See a suggested solution in Appendix A.</a></p>
+</section>
+
+
+
+
+
+
+<section class="sect1" data-type="sect1" id="CH03-ET02">
+<h1>Étude 3-2: Guards</h1>
+<p>Even though you won&#8217;t get an error message when calculating the area of a shape
+that has negative dimensions, it&#8217;s still worth guarding your <code>area/3</code> function.
+You will want two guards for each pattern to make sure that both dimensions
+are greater than or equal to zero. Since <strong>both</strong> have to be non-negative, use
+commas to separate your guards.</p>
+<p>Here is some sample output.</p>
+<pre data-type="programlisting" class="programlisting" data-code-language="erl">1&gt; c(geom).
+{ok,geom}
+2&gt; geom:area(rectangle, 3, 4).
+12
+3&gt; geom:area(ellipse, 2, 3).
+18.84955592153876
+4&gt; geom:area(triangle, 4, 5).
+10.0
+5&gt; geom:area(rectangle, -1, 3).
+** exception error: no function clause matching geom:area(rectangle,-1,3) (geom.erl, line 18)</pre>
+<p><a data-type="xref" href="#SOLUTION03-ET02">See a suggested solution in Appendix A.</a></p>
+</section>
+
+
+
+
+
+
+<section class="sect1" data-type="sect1" id="CH03-ET03">
+<h1>Étude 3-3: Underscores</h1>
+<p>If you enter a shape that <code>area/3</code> doesn&#8217;t know about, or if you enter negative
+dimensions, Erlang will give you an error message. Use underscores to create a
+&#8220;catch-all&#8221; version, so that anything at all that doesn&#8217;t match a valid
+rectangle, triangle, or ellipse will return zero. This goes against
+the Erlang philosophy of &#8220;let it fail,&#8221; but let&#8217;s look the other way
+and learn about underscores anyway.</p>
+<p>Here is some sample output.</p>
+<pre data-type="programlisting" class="programlisting" data-code-language="erl">1&gt; geom:area(rectangle, 3, 4).
+12
+2&gt; geom:area(pentagon, 3, 4).
+0
+3&gt; geom:area(hexagon, -1, 5).
+0
+4&gt; geom:area(rectangle, 1, -3).
+0</pre>
+<p><a data-type="xref" href="#SOLUTION03-ET03">See a suggested solution in Appendix A.</a></p>
+</section>
+
+
+
+
+
+
+<section class="sect1" data-type="sect1" id="CH03-ET04">
+<h1>Étude 3-4: Tuples as Parameters</h1>
+<p>Add an <code>area/1</code> function that takes a tuple of the form
+<code>{<strong>shape</strong>,<strong>number</strong>,<strong>number</strong>}</code> as its parameter. Export it
+instead of <code>area/3</code>. The <code>area/1</code> function will call the
+private <code>area/3</code> function.</p>
+<p>Here is some sample output.</p>
+<pre data-type="programlisting" class="programlisting" data-code-language="erl">1&gt; c(geom).
+{ok,geom}
+2&gt; geom:area({rectangle, 7, 3}).
+21
+3&gt; geom:area({triangle, 7, 3}).
+10.5
+4&gt; geom:area({ellipse, 7, 3}).
+65.97344572538566</pre>
+<p><a data-type="xref" href="#SOLUTION03-ET04">See a suggested solution in Appendix A.</a></p>
+</section>
+
+
+
+</section>

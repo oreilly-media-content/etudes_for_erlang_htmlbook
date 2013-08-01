@@ -1,0 +1,185 @@
+<section data-type="chapter" id="PROCESSES">
+<h1>Processes</h1>
+<div data-type="note" class="note">
+You can learn more about working with simple processes in Chapter 4 of <em>Erlang Programming</em>, Chapter 8 of <em>Programming Erlang</em>, Section 2.13 of <em>Erlang and OTP in Action</em>, and Chapters 10 and 11 of <em>Learn You Some Erlang For Great Good!</em>.
+</div>
+
+
+
+<section class="sect1" data-type="sect1" id="CH08-ET01">
+<h1>Étude 8-1: Using Processes to Simulate a Card Game</h1>
+<p>There is only one étude for this chapter. You&#8217;re going to
+write an Erlang program that lets the computer play the card
+game of "War" against itself.</p>
+
+
+
+
+<section class="sect2" data-type="sect2" id="_the_art_of_war">
+<h2>The Art of War</h2>
+<p>These are the rules of the game as condensed from
+<a href="http://en.wikipedia.org/wiki/War_%28card_game%29,Wikipedia">Wikipedia</a>, adapted
+to two players, and simplified further.</p>
+<p>Two players each take 26 cards from a shuffled deck. Each person
+puts her top card face up on the table. Whoever has the higher
+value card wins that battle, takes both cards, and puts
+them at the bottom of her stack. What happens the if the cards
+have the same value?
+Then the players go to "war." Each person puts the next two cards from
+their stack face down in the pile and a third card face up. High card
+wins, and the winner takes all the cards for the bottom of her stack.
+If the cards match again, the war continues with another set of three cards from
+each person. If a person has fewer than three cards
+when a war happens, he puts in all his cards.</p>
+<p>Repeat this entire procedure until one person has all the cards. That player
+wins the game. In this game, aces are considered to have the highest value,
+and King &gt; Queen &gt; Jack.</p>
+</section>
+
+
+
+
+
+
+<section class="sect2" data-type="sect2" id="_war_what_is_it_good_for">
+<h2>War: What is it good for?</h2>
+<p>Absolutely nothing. Well, almost nothing. War is possibly the most
+incredibly inane card game ever invented. It is a great way for children
+to spend time, and it&#8217;s perfect as an étude because</p>
+<ul>
+<li><p>it is naturally implementable as processes (players) passing messages
+(cards)</p></li>
+<li><p>there is no strategy involved in the play, thus allowing you to concentrate
+on the processes and messages</p></li>
+</ul>
+</section>
+
+
+
+
+
+
+<section class="sect2" data-type="sect2" id="_pay_now_or_pay_later">
+<h2>Pay Now or Pay Later</h2>
+<p>When you purchase an item, if you pay cash on the spot, you often end up paying
+less than if you used credit. If you are cooking a meal, getting all of the
+ingredients collected before you start (pay now) is often less stressful than
+having to stop and go to the grocery store for items you found out you didn&#8217;t
+have (pay later). In most cases, "pay now" ends up being less expensive than
+"pay later," and that certainly applies to most programming tasks.</p>
+<p>So, before you rush off to start writing code, let me give you a word of advice:
+Don&#8217;t. Spend some time with paper and pencil, away from the computer, and
+<em>design</em> this program first. This is a non-trivial program, and the "extra"
+time you spend planning it (pay now) will save you a lot of time in
+debugging and rewriting (pay later). As someone once told me, "Hours of
+programming will save you minutes of planning."</p>
+<p>Trust me, programs written at the keyboard look like it, and that
+is not meant as a compliment.</p>
+<p>Note: This does not mean that you should never use <code>erl</code> or write anything
+at the keyboard. If you are wondering about how a specific part of Erlang
+works and need to write a small test program to find out, go ahead and do that
+right away.</p>
+<p>Hint: Do your design on paper. Don&#8217;t try to keep the whole thing in your
+head. Draw diagrams. Sometimes a picture or a storyboard of how the
+messages should flow will clarify your thinking. (If your parents ever
+asked you, "Do I have to draw you a diagram?", you may now confidently
+answer "Yes. Please do that. It really helps.")</p>
+</section>
+
+
+
+
+
+
+<section class="sect2" data-type="sect2" id="_the_design">
+<h2>The Design</h2>
+<p>When I first started planning this, I was going to have just two processes
+communicating with one another, as it is in a real game. But let&#8217;s think
+about that. There is a slight asymmetry between the players. One
+person usually brings the cards and suggests playing the game. He shuffles
+the deck and deals out the cards at the beginning. Once that&#8217;s done,
+things even out. The game play itself proceeds almost automatically. Neither
+player is in control of the play, yet both of them are. It seems as if
+there is an implicit, almost telepathic communication between the players.
+Actually, there are no profound metaphysical issues here. Both players
+are simultaneously following the same set of rules. And that&#8217;s the point that
+bothered me&#8212;who makes the "decisions" in the program? I decided to sidestep
+the issue by introducing a third agent, the "dealer," who is responsible for
+giving the cards to each player at the start of the game. The dealer then
+can tell each player to turn over cards, make a decision as to who won, and
+then tell a particular player to take cards. This simplifies the message
+flow considerably and also fits in nicely with the OTP concepts of supervisors
+and servers, covered in Chapter 10 of
+<a href="http://shop.oreilly.com/product/0636920025818.do">Introducing Erlang</a>.</p>
+<p>In my code, the dealer had to keep track of:</p>
+<ul>
+<li><p>The process IDs of the players (this was a list)</p></li>
+<li><p>The current state of play (see the following)</p></li>
+<li><p>Cards received from player 1 for this battle</p></li>
+<li><p>Cards received from player 2 for this battle</p></li>
+<li><p>The number of players who had given the dealer cards so far (0, 1, or 2)</p></li>
+<li><p>The pile of cards in the middle of the table</p></li>
+</ul>
+<p>The dealer spawns the players, and then is in one of the following states.
+I&#8217;m going to anthropomorphize and use "me" to represent the dealer.</p>
+
+<dl>
+<dt>Pre-battle</dt>
+<dd><p>Tell the players to send me cards. If the pile is empty, then
+it&#8217;s a normal battle; give me one card each. If the pile isn&#8217;t empty, then
+it&#8217;s a war; give me three cards.</p></dd>
+<dt>Await battle</dt>
+<dd><p>Wait to receive the cards from the players. Add one to the count every
+time I get a player&#8217;s cards. When the count reaches two, I&#8217;m ready for&#8230;</p></dd>
+<dt>Check Cards</dt>
+<dd><p>If either player has sent me an empty list for their cards, then that player
+is out of cards, so the other player must be the winner.</p></dd>
+</dl>
+<p>Note that this is my implementation; you may find an entirely
+different and better way to write the program.</p>
+</section>
+
+
+
+
+
+
+<section class="sect2" data-type="sect2" id="_messages_are_asynchronous">
+<h2>Messages Are Asynchronous</h2>
+<p>Remember that the order in which a process receives messages may
+not be the same order in which they were sent. For example, if players
+Andrea and Bertram have a battle, and Andrea wins,
+you may be tempted to send these messages:</p>
+<ol>
+<li><p>Tell Andrea to pick up the two cards that were in the battle.</p></li>
+<li><p>Tell Andrea to send you a card for the next battle.</p></li>
+<li><p>Tell Bertram to send you a card for the next battle.</p></li>
+</ol>
+<p>This works nicely unless Andrea had just thrown her last card down
+for that battle and message two arrives <em>before</em> message one.
+Andrea will report that she is out of cards, thus losing the game,
+even though she&#8217;s really still in the game with the two cards that
+she hasn&#8217;t picked up yet.</p>
+</section>
+
+
+
+
+
+
+<section class="sect2" data-type="sect2" id="_hints_for_testing">
+<h2>Hints for Testing</h2>
+<p>Modify the <code>cards</code> module that you wrote in <a data-type="xref" href="#CH07-ET06">Étude 7-6</a>
+to generate a small deck with, say, only
+four cards in two suits. If you try to play with a full deck, the game could
+go on for a very, very long time.</p>
+<p>Use plenty of calls to <code>io:format/2</code> to see what your code is really doing.</p>
+<p><a data-type="xref" href="#SOLUTION08-ET01">See a suggested solution in Appendix A.</a></p>
+</section>
+
+
+</section>
+
+
+
+</section>

@@ -1,0 +1,329 @@
+<section data-type="chapter" id="STORING-STRUCTURED-DATA">
+<h1>Storing Structured Data</h1>
+<div data-type="note" class="note">
+You can learn more about working with records in Chapter 7 of <em>Erlang Programming</em>, Section 3.9 of <em>Programming Erlang</em>, Section 2.11 of <em>Erlang and OTP in Action</em>, and Chapter 9 of <em>Learn You Some Erlang For Great Good!</em>.  ETS and DETS are in Chapter 10 of <em>Erlang Programming</em>, Chapter 15 of <em>Programming Erlang</em>, Section 2.14 and Chapter 6 of <em>Erlang and OTP in Action</em>, and Chapter 25 of <em>Learn You Some Erlang For Great Good!</em>.  Mnesia is covered in Chapter 13 of <em>Erlang Programming</em>, Chapter 17 of <em>Programming Erlang</em>, Section 2.7 of <em>Erlang and OTP in Action</em>, and Chapter 29 of <em>Learn You Some Erlang For Great Good!</em>.
+</div>
+
+
+
+<section class="sect1" data-type="sect1" id="CH10-ET01">
+<h1>Étude 10-1: Using ETS</h1>
+<p>In honor of Erlang&#8217;s heritage as a language designed for
+telephony applications, this étude will set up a small
+database that keeps track of phone calls.</p>
+
+
+
+
+<section class="sect2" data-type="sect2" id="_part_one_2">
+<h2>Part One</h2>
+<p>Create a file named <code>phone_records.hrl</code> that defines a record
+with these fields:</p>
+<ul>
+<li><p>Phone number</p></li>
+<li><p>Starting date (month, day, and year)</p></li>
+<li><p>Starting time (hours, minutes, and seconds)</p></li>
+<li><p>End date (month, day, and year)</p></li>
+<li><p>End time (hours, minutes, and seconds)</p></li>
+</ul>
+<p>You may name the record whatever you wish, and you may use any
+field names you wish.</p>
+</section>
+
+
+
+
+
+
+<section class="sect2" data-type="sect2" id="_part_two_2">
+<h2>Part Two</h2>
+<p>In a module named <code>phone_ets</code>,
+create an ETS table for phone calls by reading a file. The function
+that does this will be named <code>setup/1</code>, and its argument will be the
+name of the file containing the data.</p>
+<p>Copy the following text into a file named
+<code>call_data.csv</code> and save the file in the same directory where you
+did part one.</p>
+<pre data-type="programlisting" class="programlisting">650-555-3326,2013-03-10,09:01:47,2013-03-10,09:05:11
+415-555-7871,2013-03-10,09:02:20,2013-03-10,09:05:09
+729-555-8855,2013-03-10,09:00:55,2013-03-10,09:02:18
+729-555-8855,2013-03-10,09:02:57,2013-03-10,09:03:56
+213-555-0172,2013-03-10,09:00:59,2013-03-10,09:03:49
+946-555-9760,2013-03-10,09:01:20,2013-03-10,09:03:10
+301-555-0433,2013-03-10,09:01:44,2013-03-10,09:04:06
+301-555-0433,2013-03-10,09:05:17,2013-03-10,09:07:53
+301-555-0433,2013-03-10,09:10:05,2013-03-10,09:13:14
+729-555-8855,2013-03-10,09:04:40,2013-03-10,09:07:29
+213-555-0172,2013-03-10,09:04:26,2013-03-10,09:06:00
+213-555-0172,2013-03-10,09:06:59,2013-03-10,09:10:35
+946-555-9760,2013-03-10,09:03:36,2013-03-10,09:04:23
+838-555-1099,2013-03-10,09:00:43,2013-03-10,09:02:44
+650-555-3326,2013-03-10,09:05:48,2013-03-10,09:09:08
+838-555-1099,2013-03-10,09:03:43,2013-03-10,09:06:26
+838-555-1099,2013-03-10,09:07:54,2013-03-10,09:10:10
+301-555-0433,2013-03-10,09:14:07,2013-03-10,09:15:08
+415-555-7871,2013-03-10,09:06:15,2013-03-10,09:09:32
+650-555-3326,2013-03-10,09:10:12,2013-03-10,09:13:09</pre>
+<p>So, how do you read a file? Take just the first three lines,
+and put them into a file called <code>smallfile.csv</code>, then do the following
+commands from <code>erl</code></p>
+<pre data-type="programlisting" class="programlisting" data-code-language="erl">1&gt; {ResultCode, InputFile} = file:open("smallfile.csv", [read]).
+{ok,&lt;0.33.0&gt;}
+2&gt; io:get_line(InputFile, "").
+"650-555-3326,2013-03-10,09:01:47,2013-03-10,09:05:11\n"
+3&gt; io:get_line(InputFile, "").
+"415-555-7871,2013-03-10,09:02:20,2013-03-10,09:05:09\n"
+4&gt; io:get_line(InputFile, "").
+"729-555-8855,2013-03-10,09:00:55,2013-03-10,09:02:18\n"
+5&gt; io:get_line(InputFile, "").
+eof
+6&gt; file:open("nosuchfile", [read]).
+{error,enoent}</pre>
+<p>In the preceding example, lines 1 through 5 show how to open a file
+and read it. You can tell you are at the end of file when you get an
+atom (<code>eof</code>) instead of a list (remember, Erlang strings are lists).
+Line 6 shows what happens if you try to open a file
+that doesn&#8217;t exist.</p>
+<p>The phone number is the key for this data. Since there are multiple
+calls per phone number, you will need a <code>bag</code> type table.
+To get the individual items from each line, use
+<code>re:split/2</code>, much as you did in <a data-type="xref" href="#CH05-ET02">Étude 5-2</a>.</p>
+</section>
+
+
+
+
+
+
+<section class="sect2" data-type="sect2" id="_part_three">
+<h2>Part Three</h2>
+<p>Write functions to summarize the number of minutes for a single
+phone number (<code>summary/1</code>) or for all phone numbers.
+(<code>summary/0</code>). These functions return a list of tuples in the form:</p>
+<p><code>[{<em>phoneNumber1</em>, <em>minutes</em>]},{<em>phoneNumber2</em>, <em>minutes</em>}, &#8230;]</code></p>
+<p>You could write your own code to do time and date calculations to
+figure out the duration of a phone call, but there&#8217;s a limit on how
+much you really want to re-invent the wheel, especially with something
+as complex as calendar calculations. Consider, for example, a call that
+begins on 31 December 2013 at 11:58:36 p.m. and ends on 1 January 2014 at
+12:14:22 p.m. I don&#8217;t even want to think about calls that start on
+28 February and go to the next day.</p>
+<p>So, instead, use the <code>calendar:datetime_to_gregorian_seconds/1</code> function
+to convert a date and time to the number of seconds since the year zero.
+(I swear I am not making this up.) The argument to this function is a
+tuple in the form:</p>
+<pre data-type="programlisting" class="programlisting">{{<em>year</em>, <em>month</em>, <em>day</em>}, {<em>hours</em>, <em>minutes</em>, <em>seconds</em>}} %% for example
+{{2013, 07, 14}, {14, 49, 21}}</pre>
+<p>Round up any number of seconds to the next minute for ech call. Thus, if
+a call lasts 4 minutes and 6 seconds, round it up to 5 minutes.
+Hint: add 59 to the total number of seconds before you <code>div 60</code>.</p>
+<div data-type="note" class="note">
+Now might be the time to rewrite part two so that your dates and times
+are stored in the appropriate format. That way, you do the conversion
+from string to tuple only once, instead of every time you ask
+for a summary.
+</div>
+<p>Here is the sample output.</p>
+<pre data-type="programlisting" class="programlisting" data-code-language="erl">1&gt; c(phone_ets).
+{ok,phone_ets}
+2&gt; phone_ets:setup("call_data.csv").
+ok
+3&gt; phone_ets:summary("415-555-7871").
+[{"415-555-7871",7}]
+4&gt; phone_ets:summary().
+[{"946-555-9760",3},
+ {"415-555-7871",7},
+ {"729-555-8855",6},
+ {"301-555-0433",12},
+ {"213-555-0172",9},
+ {"650-555-3326",11}]</pre>
+<p><a data-type="xref" href="#SOLUTION10-ET01">See a suggested solution in Appendix A.</a></p>
+</section>
+
+
+</section>
+
+
+
+
+
+
+<section class="sect1" data-type="sect1" id="CH10-ET02">
+<h1>Étude 10-2: Using Mnesia</h1>
+<p>I have good news and bad news. First, the bad news. Mnesia is <em>not</em>
+a relational detabase management system. If you try to use a query
+list comprehension to join three tables, Erlang will complain that joins
+with more than two tables are not efficient.</p>
+<p>Now, the good news. While trying to find a way around this, I discovered
+something about query list comprehensions that is really pretty neat, and I&#8217;m
+happy to share it with you.</p>
+<p>In this étude, you will use add a table of customer names and
+use Mnesia query list comprehensions to join data
+from those tables when producing a summary.</p>
+
+
+
+
+<section class="sect2" data-type="sect2" id="_part_one_3">
+<h2>Part One</h2>
+<p>You will need to add a record for customers to <code>phone_records.hrl</code>. Its fields
+will be:</p>
+<ul>
+<li><p>Phone Number (this is the key)</p></li>
+<li><p>Customer&#8217;s last name</p></li>
+<li><p>Customer&#8217;s first name</p></li>
+<li><p>Customer&#8217;s middle name</p></li>
+<li><p>Rate paid per minute (float)</p></li>
+</ul>
+<p>Again, you may name the record whatever you wish, and you may use any
+field names you wish.</p>
+</section>
+
+
+
+
+
+
+<section class="sect2" data-type="sect2" id="_part_two_3">
+<h2>Part Two</h2>
+<p>In a module named <code>phone_mnesia</code>,
+create the Mnesia tables for the two files. The function
+that does this will be named <code>setup/2</code>, and its arguments will be the
+names of the file containing the data.</p>
+<p>Use the phone call data from <a data-type="xref" href="#ET10-01">Étude 10-1</a>, and
+use this data for the customers. Put it in a file named
+<code>customer_data.csv</code> or whatever other name you wish.</p>
+<pre data-type="programlisting" class="programlisting">213-555-0172,Nakamura,Noriko,,0.12
+301-555-0433,Ekberg,Erik,Engvald,0.07
+415-555-7871,Alvarez,Alberto,Agulto,0.15
+650-555-3326,Girard,Georges,Gaston,0.10
+729-555-8855,Tran,Truong,Thai,0.09
+838-555-1099,Smith,Samuel,Steven,0.10
+946-555-9760,Bobrov,Bogdan,Borisovitch,0.14</pre>
+<p>You could write two functions that all open a file, read data,
+split it into fields, write the data to the Mnesia table, and then keep
+going until end-of-file. These would share a lot of common code. Instead,
+try writing just one function that does the reading, and pass a higher-order
+function to it to do the appropriate "split-and-write" operation.</p>
+<p>When I solved this problem, my <code>fill_table/5</code> function took these
+arguments:</p>
+<ul>
+<li><p>The name of the table (an atom)</p></li>
+<li><p>The name of the file to read (a string)</p></li>
+<li><p>The function that adds the data (a higher-order <code>fun</code>)</p></li>
+<li><p>The <code>record_info</code> for the field</p></li>
+<li><p>The type of table. The phone call data is a <code>bag</code>, the
+customer data is a <code>set</code>.</p></li>
+</ul>
+</section>
+
+
+
+
+
+
+<section class="sect2" data-type="sect2" id="_part_three_2">
+<h2>Part Three</h2>
+<p>Write a function named <code>summary/3</code> that takes a last name, first name,
+and middle name. It produces a tuple that contains the person&#8217;s phone number,
+total number of minutes, and total cost for those minutes.</p>
+<p>Here is some sample output.</p>
+<pre data-type="programlisting" class="programlisting" data-code-language="erl">1&gt; c(phone_mnesia).
+{ok,phone_mnesia}
+2&gt; phone_mnesia:setup("call_data.csv", "customer_data.csv").
+{atomic,ok}
+3&gt; phone_mnesia:summary("Smith", "Samuel", "Steven").
+[{"838-555-1099",9,0.9}]
+4&gt; phone_mnesia:summary("Nakamura", "Noriko", "").
+[{"213-555-0172",9,1.08}]</pre>
+<p>As promised, here&#8217;s the good news about query list comprehensions.
+In this module, you need to access the
+customer table to match the phone number to the name when collecting the
+calls for the customer. You also need to access the customer table in
+order to access the customer&#8217;s rate per minute. You don&#8217;t want to have
+to write the specification for the guards on the customer table twice.</p>
+<p>As
+<a href="http://shop.oreilly.com/product/0636920025818.do">Introducing Erlang</a>
+notes, "you can use the <code>qlc:q</code> function to hold a
+list comprehension and the <code>qlc:e</code> function to process it." Specifically,
+the <code>qlc:q</code> function returns a <em>query handle</em> which you can evaluate
+and which you can also use in place of a list name in a query list
+comprehension.</p>
+<p>Here&#8217;s an example. Let&#8217;s say you have tables of people and their pets.
+In the <code>pet</code> table, the <code>owner_id</code> references the <code>id_number</code> of someone
+in the <code>person</code> table.</p>
+<pre data-type="programlisting" class="programlisting" data-code-language="erlang">-record(person,
+  {id_number, name, age, gender, city, amount_owed}).
+-record(animal,
+  {id_number, name, species, gender, owner_id}).</pre>
+<p>You could do a query like this to find a
+specific set of people, and then to find information about their pets:</p>
+<pre data-type="programlisting" class="programlisting" data-code-language="erlang">get_info() -&gt;
+  People = mnesia:transaction(
+    fun() -&gt; qlc:e(
+      qlc:q( [ P ||
+        P &lt;- mnesia:table(person),
+        P#person.age &gt;= 21,
+        P#person.gender == "M",
+        P#person.city == "Podunk"]
+        )
+      )
+    end
+  ),
+
+  Pets = mnesia:transaction(
+    fun() -&gt; qlc:e(
+      qlc:q( [{A#animal.name, A#animal.species, P#person.name} ||
+        P &lt;- mnesia:table(person),
+        P#person.age &gt;= 21,
+        P#person.gender == "M",
+        P#person.city == "Podunk",
+        A &lt;- mnesia:table(animal),
+        A#animal.owner_id == P#person.id_number])
+      )
+    end
+  ),
+  [People, Pets].</pre>
+<p>To avoid duplicating the list and guards for the person table, you can make a
+query list handle for that query and use it again in the animal search. Note
+that you don&#8217;t have to be in a transacation to create a query handle,
+but you must be in a transaction to process it.</p>
+<pre data-type="programlisting" class="programlisting" data-code-language="erl">get_info_easier() -&gt;
+
+  %% "Pre-process" the list comprehension for finding people
+
+  QHandle = qlc:q( [ P ||
+    P &lt;- mnesia:table(person),
+    P#person.age &gt;= 21,
+    P#person.gender == "M",
+    P#person.city == "Podunk"]
+  ),
+
+  %% Evaluate it to retrieve the people you want
+
+  People = mnesia:transaction(
+    fun() -&gt; qlc:e( QHandle ) end
+  ),
+
+  %% And use the handle again when retrieving
+  %% information about their pets
+
+  Pets = mnesia:transaction(
+    fun() -&gt; qlc:e(
+      qlc:q( [{A#animal.name, A#animal.species, P#person.name} ||
+        P &lt;- QHandle,
+        A &lt;- mnesia:table(animal),
+        A#animal.owner_id == P#person.id_number])
+      )
+    end
+  ),
+  [People, Pets].</pre>
+<p><a data-type="xref" href="#SOLUTION10-ET02">See a suggested solution in Appendix A.</a></p>
+</section>
+
+
+</section>
+
+
+
+</section>

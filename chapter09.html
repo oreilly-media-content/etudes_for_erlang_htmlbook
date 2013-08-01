@@ -1,0 +1,101 @@
+<section data-type="chapter" id="HANDLING_ERRORS">
+<h1>Handling Errors</h1>
+<div data-type="note" class="note">
+You can learn more about error handling in Chapters 3 and 17 of <em>Erlang Programming</em>, Chapter 4 and Section 18.2 of <em>Programming Erlang</em>, Section 2.8 and Chapters 5 and 7 of <em>Erlang and OTP in Action</em>, and Chapters 7 and 12 of <em>Learn You Some Erlang For Great Good!</em>.
+</div>
+
+
+
+<section class="sect1" data-type="sect1" id="CH09-ET01">
+<h1>Étude 9-1: <code>try</code> and <code>catch</code></h1>
+<p>Update the <code>stats</code> module that you wrote in <a data-type="xref" href="#CH07-ET03">Étude 7-3</a>
+so that it will catch errors in the <code>minimum/1</code>, <code>maximum/1</code>,
+<code>mean/1</code> and <code>stdv/1</code> functions.</p>
+<p>Here is some sample output.</p>
+<pre data-type="programlisting" class="programlisting" data-code-language="erl">1&gt; c(stats).
+{ok,stats}
+2&gt; stats:minimum([]).
+{error,badarg}
+3&gt; stats:mean([]).
+{error,badarith}
+4&gt; stats:mean(["123", 456]).
+{error,badarith}
+5&gt; stats:stdv([]).
+{error,badarith}</pre>
+<p><a data-type="xref" href="#SOLUTION09-ET01">See a suggested solution in Appendix A.</a></p>
+</section>
+
+
+
+
+
+
+<section class="sect1" data-type="sect1" id="CH09-ET02">
+<h1>Étude 9-2: Logging Errors</h1>
+<p>Write a module named <code>bank</code> that contains a function <code>account/1</code>. The
+function takes a numeric <code>Balance</code>, which gives the current balance in
+the account in imaginary dollars.</p>
+<p>The function will repeatedly ask for a transaction (deposit, withdraw,
+balance inquiry, or quit). If a deposit or withdrawal, it asks for the amount
+to deposit or withdraw, and then does that transaction. If a deposit is
+more than $10,000, the deposit may be subject to hold.</p>
+<p>Provide output to the customer, and also use <code>error_logger</code> to write to a
+log file (which, in this case, will go to your terminal).
+Choose any form of input prompts and feedback and logging messages that you
+desire. Handle the following situtations:</p>
+<ul>
+<li><p>Deposits and withdrawals cannot be negative numbers (error)</p></li>
+<li><p>Deposits of $10,000 or more might be subject to hold (warning)</p></li>
+<li><p>All other transactions are successful (informational)</p></li>
+</ul>
+<p>Use <code>get_number/1</code> from <a data-type="xref" href="#CH05-ET01">Étude 5-1</a> to allow either integer
+or float input.</p>
+<p>Here is sample output. Due to Erlang&#8217;s asynchronous nature,
+the user prompts and logging are often interleaved in the most inconvenient
+places.</p>
+<pre data-type="programlisting" class="programlisting" data-code-language="erl">1&gt; c(bank).
+{ok,bank}
+2&gt; bank:account(2000).
+D)eposit, W)ithdraw, B)alance, Q)uit: D
+Amount to deposit: 300
+Your new balance is 2300
+D)eposit, W)ithdraw, B)alance, Q)uit:
+=INFO REPORT==== 26-Jan-2013::06:42:52 ===
+Successful deposit 300
+W
+Amount to withdraw: -200
+Withdrawals may not be less than zero.
+=ERROR REPORT==== 26-Jan-2013::06:42:56 ===
+Negative withdrawal amount -200
+D)eposit, W)ithdraw, B)alance, Q)uit: D
+Amount to deposit: 15000
+Your deposit of $15000 may be subject to hold.
+=ERROR REPORT==== 26-Jan-2013::06:43:05 ===
+Excessive deposit 15000
+Your new balance is 17300
+D)eposit, W)ithdraw, B)alance, Q)uit: W
+Amount to withdraw: 32767
+You cannot withdraw more than your current balance of 17300.
+
+=ERROR REPORT==== 26-Jan-2013::06:43:17 ===
+Overdraw 32767 from balance 17300
+D)eposit, W)ithdraw, B)alance, Q)uit: W
+Amount to withdraw: 150.25
+Your new balance is 17149.75
+
+=INFO REPORT==== 26-Jan-2013::06:43:29 ===
+Successful withdrawal 150.25
+D)eposit, W)ithdraw, B)alance, Q)uit: B
+D)eposit, W)ithdraw, B)alance, Q)uit:
+=INFO REPORT==== 26-Jan-2013::06:43:35 ===
+Balance inquiry 17149.75
+X
+Unknown command X
+D)eposit, W)ithdraw, B)alance, Q)uit: Q
+true</pre>
+<p><a data-type="xref" href="#SOLUTION09-ET02">See a suggested solution in Appendix A.</a></p>
+</section>
+
+
+
+</section>

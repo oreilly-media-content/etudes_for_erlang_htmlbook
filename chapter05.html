@@ -1,0 +1,120 @@
+<section data-type="chapter" id="STRINGS">
+<h1>Strings</h1>
+<div data-type="note" class="note">
+You can learn more about working with strings in Chapter 2 of <em>Erlang Programming</em>, Sections 2.11 and 5.4 of <em>Programming Erlang</em>, Section 2.2.6 of <em>Erlang and OTP in Action</em>, and Chapter 1 of <em>Learn You Some Erlang For Great Good!</em>.
+</div>
+
+
+
+<section class="sect1" data-type="sect1" id="CH05-ET01">
+<h1>Étude 5-1: Validating Input</h1>
+<p>The Erlang philosophy is "let it crash"; this makes a great deal of sense
+for a telecommunications system (which is what Erlang was first designed for).
+Hardware is going to fail. When it does, you just replace it or restart it.
+The person using the phone system is unaware of this; her phone just
+continues to work.</p>
+<p>This philosophy, however, is not the one you want to employ when you
+have (atypical for Erlang) programs that ask for user input.
+You want to those to crash infrequently and catch as many input errors as possible.</p>
+<p>In this étude, you will write a module named <code>ask_area</code>, which prompts you
+for a shape and its dimensions, and then returns the area by calling
+<code>geom:area/3</code>, which you wrote in <a data-type="xref" href="#CH04-ET01">Étude 4-1</a>.</p>
+<p>Your module will ask for the first letter of the shape (in either upper
+or lower case), then the appropriate dimensions. It should catch invalid
+letters, non-numeric input, and negative numbers as input.
+Here is some sample output.</p>
+<pre data-type="programlisting" class="programlisting" data-code-language="erl">1&gt; c(ask_area).
+{ok,ask_area}
+2&gt; c(geom).
+{ok,geom}
+3&gt; ask_area:area().
+R)ectangle, T)riangle, or E)llipse &gt; r
+Enter width &gt; 4
+Enter height &gt; 3.7
+14.8
+4&gt; ask_area:area().
+R)ectangle, T)riangle, or E)llipse &gt; T
+Enter base &gt; 3
+Enter height &gt; 7
+10.5
+5&gt; ask_area:area().
+R)ectangle, T)riangle, or E)llipse &gt; x
+Unknown shape x
+ok
+6&gt; ask_area:area().
+R)ectangle, T)riangle, or E)llipse &gt; r
+Enter width &gt; -3
+Enter height &gt; 4
+Both numbers must be greater than or equal to zero.
+ok
+7&gt; ask_area:area().
+R)ectangle, T)riangle, or E)llipse &gt; e
+Enter major axis &gt; three
+Enter minor axis &gt; 2
+Error in first number.</pre>
+<p>Here are the functions that I needed to write in order to make this
+program work.</p>
+
+<dl>
+<dt><code>char_to_shape/1</code></dt>
+<dd><p>Given a character parameter (<code>R</code>, <code>T</code>, or <code>E</code> in either upper or lower case),
+return an atom representing the specified shape (<code>rectangle</code>,
+<code>triangle</code>, <code>ellipse</code>, or <code>unknown</code> if some other character is entered).</p></dd>
+<dt><code>get_number/1</code></dt>
+<dd><p>Given a string as a prompt, displays the string
+<code>"Enter <em>prompt</em> &gt; "</code> and returns the number that was input.
+Your function should accept either integers or floats. Fun fact:
+<code>string:to_float/1</code> <em>requires</em> a decimal point; if you just enter
+input like <code>"3"</code>, you will receive <code>{error,no_float}</code> for your efforts.
+That means that you should try to convert to float first,
+and if that fails, try a conversion to integer.
+It was at this point that I felt like the
+guy who is beating his head against a wall, and, when asked, "Why are you
+doing that?" responds, "Because it feels so good when I stop."</p></dd>
+<dt><code>get_dimensions/2</code></dt>
+<dd><p>Takes two prompts as its parameters (one for each dimension), and calls
+<code>get_number/1</code> twice. Returns a tuple <code>{<em>N1</em>, <em>N2</em>}</code> with the dimensions.</p></dd>
+<dt><code>calculate/3</code></dt>
+<dd><p>Takes a shape (as an atom) and two dimensions as its parameters.
+If the shape is <code>unknown</code>, or the first or second dimension isn&#8217;t numeric,
+or either number is negative, the function displays an
+appropriate error message. Otherwise, the function calls
+<code>geom:area/3</code> to calculate the area of the shape.</p></dd>
+</dl>
+<p><a data-type="xref" href="#SOLUTION05-ET01">See a suggested solution in Appendix A.</a></p>
+</section>
+
+
+
+
+
+
+<section class="sect1" data-type="sect1" id="CH05-ET02">
+<h1>Étude 5-2: Using the <code>re</code> Module</h1>
+<p>Write a module named <code>dates</code> that contains a function
+<code>date_parts/1</code>, which takes a string in ISO date format
+(<code>"yyyy-mm-dd"</code>) and
+returns a list of integers in the form
+<code>[yyyy, mm, dd]</code>. This function does not need to do any error checking.</p>
+<p>You&#8217;ll use the <code>re:split/3</code> function from Erlang&#8217;s
+regular expression (<code>re</code>) module to accomplish the task.
+How, you may ask, does that function work? Ask Erlang!
+The command <code>erl -man re</code> will give you the online documentation for
+the <code>re</code> module.</p>
+<p>Scroll down the resulting page until you find
+<code>split(Subject, RE, Options) &#8594; SplitList</code> and read the examples.</p>
+<p>When you write the <code>-spec</code> for this function (you <em>have</em> been
+writing documentation for your functions, haven&#8217;t you?), the type
+you will use for the parameter is <code>string()</code>.</p>
+<div data-type="note" class="note">
+You can see a complete
+list of the built-in types at <a href="http://www.erlang.org/doc/reference_manual/typespec.html">http://www.erlang.org/doc/reference_manual/typespec.html</a>
+</div>
+<p>Yes, I know this étude seems pointless, but trust me:
+I&#8217;m going somewhere with this. Stay tuned.</p>
+<p><a data-type="xref" href="#SOLUTION05-ET02">See a suggested solution in Appendix A.</a></p>
+</section>
+
+
+
+</section>

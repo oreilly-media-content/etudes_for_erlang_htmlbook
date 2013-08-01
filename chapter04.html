@@ -1,0 +1,168 @@
+<section data-type="chapter" id="LOGIC-RECURSION">
+<h1>Logic and Recursion</h1>
+<div data-type="note" class="note">
+You can learn more about working with logical flow and recursion in Chapter 3 of <em>Erlang Programming</em>, Chapter 3 of <em>Programming Erlang</em>, Sections 2.6 and 2.15 of <em>Erlang and OTP in Action</em>, and Chapters 3 and 5 of <em>Learn You Some Erlang For Great Good!</em>.
+</div>
+
+
+
+<section class="sect1" data-type="sect1" id="CH04-ET01">
+<h1>Étude 4-1: Using <code>case</code></h1>
+<p>Change the <code>area/3</code> function that you wrote in
+<a data-type="xref" href="#CH03-ET02">Étude 3-2</a> so that it uses a <code>case</code> instead
+of pattern matching. Use a guard on the function definition to ensure
+that the numeric arguments are both greater than zero.</p>
+<p><a data-type="xref" href="#SOLUTION04-ET01">See a suggested solution in Appendix A.</a></p>
+</section>
+
+
+
+
+
+
+<section class="sect1" data-type="sect1" id="CH04-ET02">
+<h1>Étude 4-2: Recursion</h1>
+<p>This is a typical exercise for recursion: finding the greatest common
+divisor (GCD) of two integers. Instead of giving Euclid&#8217;s method, we&#8217;ll
+do this with a method devised by Edsger W. Dijkstra. The neat part about
+Dijkstra&#8217;s method is that you don&#8217;t need to do any division to find
+the result.  Here is the method.</p>
+<p>To find the GCD of integers M and N:</p>
+<ul>
+<li><p>If M and N are equal, the result is M.</p></li>
+<li><p>If M is greater than N, the result is the GCD of M - N and N</p></li>
+<li><p>Otherwise M must be less than N, and the result is the GCD of M and N - M.</p></li>
+</ul>
+<p>Write a function <code>gcd/2</code> in a module named <code>dijkstra</code> that implements
+the algorithm. This program is an ideal place to practice Erlang&#8217;s <code>if</code> construct.
+Here is some sample output.</p>
+<pre data-type="programlisting" class="programlisting" data-code-language="erl">1&gt; c(dijkstra).
+{ok,dijkstra}
+2&gt; dijkstra:gcd(12, 8).
+4
+3&gt; dijkstra:gcd(14, 21).
+7
+4&gt; dijkstra:gcd(125, 46).
+1
+5&gt; dijkstra:gcd(120, 36).
+12</pre>
+<p><a data-type="xref" href="#SOLUTION04-ET02">See a suggested solution in Appendix A.</a></p>
+<p>You can also use guards with multiple clauses to solve this étude; <a data-type="xref" href="#SOLUTION04-ET02B">the solution for that approach is in Appendix A.</a> In general, use of guards is considered more in the spirit of Erlang.</p>
+<p>The next two exercises involve writing code to raise a number to an integer
+power (like 2.5<sup>3</sup> or 4<sup>-2</sup>) and finding the <em>n</em>th root of a number, such
+as the cube root of 1728 or the fifth root of 3.2.</p>
+<p>These capabilities already exist with the <code>math:pow/2</code> function, so you may
+wonder why I&#8217;m asking you to re-invent the wheel. The reason is not to replace
+<code>math:pow/2</code>, but to experiment with recursion by writing functions that can be
+expressed quite nicely that way.</p>
+</section>
+
+
+
+
+
+
+<section class="sect1" data-type="sect1" id="CH04-ET03">
+<h1>Étude 4-3: Non-Tail Recursive Functions</h1>
+<p>Create a module named <code>powers</code> (no relation to Francis Gary Powers), and
+write a function named <code>raise/2</code> which takes parameters <code>X</code>  and <code>N</code> and
+returns the value of X<sup>N</sup>.</p>
+<p>Here&#8217;s the information you need to know to write the function:</p>
+<ul>
+<li><p>Any number to the power 0 equals 1.</p></li>
+<li><p>Any number to the power 1 is that number itself&#8201;&#8212;&#8201;that stops the
+recursion.</p></li>
+<li><p>When <code>N</code> is positive, <code>X<sup>N</sup></code> is equal to <code>X</code> times <code>X<sup>(N - 1)</sup></code>&#8201;&#8212;&#8201;there&#8217;s your recursion.</p></li>
+<li><p>When <code>N</code> is negative, <code>X<sup>N</sup></code> is equal to <code>1.0 / X<sup>-N</sup></code></p></li>
+</ul>
+<p>Note that this function is <em>not</em> tail recursive.  Here is some sample output.</p>
+<pre data-type="programlisting" class="programlisting" data-code-language="erl">1&gt; c(powers).
+{ok,powers}
+2&gt; powers:raise(5, 1).
+5
+3&gt; powers:raise(2, 3).
+8
+4&gt; powers:raise(1.2, 3).
+1.728
+5&gt; powers:raise(2, 0).
+1
+6&gt; powers:raise(2, -3).
+0.125</pre>
+<p><a data-type="xref" href="#SOLUTION04-ET03">See a suggested solution in Appendix A.</a></p>
+</section>
+
+
+
+
+
+
+<section class="sect1" data-type="sect1" id="CH04-ET04">
+<h1>Étude 4-4: Tail Recursion with an Accumulator</h1>
+<p>Practice the "accumulator trick."
+Rewrite the <code>raise/2</code> function for <code>N</code> greater than zero so that it
+calls a helper function <code>raise/3</code>  This new function has <code>X</code>, <code>N</code>, and
+an <code>Accumulator</code> as its parameters.</p>
+<p>Your <code>raise/2</code> function will return 1 when <code>N</code> is equal to 0,
+and will return <code>1.0 / raise(X, -N)</code> when N is less than zero.</p>
+<p>When <code>N</code> is greater than zero, <code>raise/2</code> will
+call <code>raise/3</code> with arguments <code>X</code>, <code>N</code>, and 1 as the Accumulator.</p>
+<p>The <code>raise/3</code> function will return the
+<code>Accumulator</code> when <code>N</code> equals 0 (this will stop the recursion).</p>
+<p>Otherwise, recursively call <code>raise/3</code> with <code>X</code>, <code>N - 1</code>,
+and <code>X</code> times the <code>Accumulator</code> as its arguments.</p>
+<p>The <code>raise/3</code> function <em>is</em> tail recursive.</p>
+</section>
+
+
+
+
+
+
+<section class="sect1" data-type="sect1" id="CH04-ET05">
+<h1>Étude 4-5: Recursion with a Helper Function</h1>
+<p>In this exercise, you will add a function <code>nth_root/2</code> to the
+<code>powers</code> module. This new function finds the
+<em>n</em>th root of a number, where <em>n</em> is an integer.
+For example, <code>nth_root(36, 2)</code> will calculate
+the square root of 36, and <code>nth_root(1.728, 3)</code> will return the cube
+root of 1.728.</p>
+<p>The algorithm used here is the Newton-Raphson method for calculating
+roots. (See <a href="http://en.wikipedia.org/wiki/Newton%27s_method">http://en.wikipedia.org/wiki/Newton%27s_method</a> for details).</p>
+<p>You will need a helper function <code>nth_root/3</code>, whose parameters
+are <code>X</code>, <code>N</code>, and an approximation to the result, which we
+will call <code>A</code>. <code>nth_root/3</code> works as follows:</p>
+<ul>
+<li><p>Calculate <code>F</code> as <code>(A<sup>N</sup> - X)</code></p></li>
+<li><p>Calculate <code>Fprime</code> as <code>N * A<sup>(N - 1)</sup></code></p></li>
+<li><p>Calculate your next approximation (call it <code>Next</code>) as <code>A - F / Fprime</code></p></li>
+<li><p>Calculate the change in value (call it <code>Change</code>) as the absolute value of <code>Next - A</code></p></li>
+<li><p>If the <code>Change</code> is
+less than some limit (say, 1.0e-8), stop the recursion and return
+<code>Next</code>; that&#8217;s as close to the root as you are going to get.</p></li>
+<li><p>Otherwise, call the <code>nth_root/3</code> function again with
+<code>X</code>, <code>N</code>, and <code>Next</code> as its arguments.</p></li>
+</ul>
+<p>For your first approximation, use <code>X / 2.0</code>. Thus, your <code>nth_root/2</code> function
+will simply be this:</p>
+<p><code>nth_root(X, N) &#8594; nth_root(X, N, X / 2.0)</code></p>
+<p>Use <code>io:format</code> to show each new approximation as you
+calculate it. Here is some sample output.</p>
+<pre data-type="programlisting" class="programlisting" data-code-language="erl">1&gt; c(powers).
+{ok,powers}
+2&gt; powers:nth_root(27, 3).
+Current guess is 13.5
+Current guess is 9.049382716049383
+Current guess is 6.142823558176272
+Current guess is 4.333725614685509
+Current guess is 3.3683535855517652
+Current guess is 3.038813723595138
+Current guess is 3.0004936436555805
+Current guess is 3.000000081210202
+Current guess is 3.000000000000002
+3.0</pre>
+<p><a data-type="xref" href="#SOLUTION04-ET05">See a suggested solution in Appendix A.</a></p>
+</section>
+
+
+
+</section>

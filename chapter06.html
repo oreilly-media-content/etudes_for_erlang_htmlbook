@@ -1,0 +1,349 @@
+<section data-type="chapter" id="LISTS">
+<h1>Lists</h1>
+<div data-type="note" class="note">
+You can learn more about working with lists in Chapter 2 of <em>Erlang Programming</em>, Sections 2.10 and 3.5 of <em>Programming Erlang</em>, Section 2.2.5 of <em>Erlang and OTP in Action</em>, and Chapter 1 of <em>Learn You Some Erlang For Great Good!</em>.
+</div>
+
+
+
+<section class="sect1" data-type="sect1" id="CH06-ET01">
+<h1>Étude 6-1: Recursive Iteration through a List</h1>
+<p>In a module named <code>stats</code>, write a function named <code>minimum/1</code>. It takes
+a list of numbers as its argument and returns the smallest value. This
+function already exists in the <code>lists</code> module (<code>lists:min/1</code>), but it&#8217;s
+a good exercise in learning about recursion.</p>
+<p>Here&#8217;s the pseudocode for <code>minimum/1</code>.</p>
+<ul>
+<li><p>Split the list into the first number and the remainder of the list using
+the cons operator <code>|</code>.</p></li>
+<li><p>Call function <code>minimum/2</code>, which takes a list as its first argument and
+the "smallest number so far" (the <em>current candidate</em>) as its second argument.
+Use the remainder of the list (which you extracted in the previous step) as
+the first argument to <code>minimum/2</code>, and the first item in the list as the second
+argument.</p></li>
+</ul>
+<p>Here&#8217;s the pseudocode for <code>minimum/2</code>.</p>
+<ul>
+<li><p>When the list passed to <code>minimum/2</code> is empty, the final result is the current
+candidate. This stops the recursion.</p></li>
+<li><p>If the list passed to <code>minimum/2</code> is not empty, then see if the head of
+the list is less than the current candidate.</p>
+<ul>
+<li><p>If so, call <code>minimum/2</code> with the tail of the list as the first argument
+and the list head (the new "smallest number") as the second argument.</p></li>
+<li><p>If not, call <code>minimum/2</code> with the tail of the list as the first argument
+and the current candidate (still the "smallest number")
+as the second argument.</p></li>
+</ul>
+</li>
+</ul>
+<p>Unlike most examples in
+<a href="http://shop.oreilly.com/product/0636920025818.do">Introducing Erlang</a>,
+passing an empty list to this
+function will make it crash. That&#8217;s a reasonable thing to do, as an empty
+list can&#8217;t really be said to have a minimum value.</p>
+<pre data-type="programlisting" class="programlisting" data-code-language="erl">1&gt; c(stats).
+{ok,stats}
+2&gt; N = [4, 1, 7, -17, 8, 2, 5].
+[4,1,7,-17,8,2,5]
+3&gt; stats:minimum(N).
+-17
+4&gt; stats:minimum([]).
+** exception error: no match of right hand side value []
+     in function  stats:minimum/1 (stats.erl, line 15)
+5&gt; stats:minimum([52.46]).
+52.46</pre>
+<p><a data-type="xref" href="#SOLUTION06-ET01">See a suggested solution in Appendix A.</a></p>
+</section>
+
+
+
+
+
+
+<section class="sect1" data-type="sect1" id="CH06-ET02">
+<h1>Étude 6-2: Iteration through Lists (More Practice)</h1>
+<p>Add two more functions to the <code>stats</code> module:</p>
+<p><code>maximum/1</code>, which is just
+the same as <code>minimum/1</code>, but don&#8217;t forget&#8212;as I did&#8212;to reverse the direction
+of your test for "smaller" to become a test for "larger." (This function
+also already exists as <code>lists:max/1</code>.)</p>
+<p><code>range/1</code>, which takes a list of numbers as its argument and returns a
+list of two numbers: the minimum and maximum entries in the list.</p>
+<pre data-type="programlisting" class="programlisting" data-code-language="erl">1&gt; c(stats).
+{ok,stats}
+2&gt; N = [4, 1, 7, -17, 8, 2, 5].
+[4,1,7,-17,8,2,5]
+3&gt; stats:maximum(N).
+8
+4&gt; stats:range(N).
+[-17,8]</pre>
+<p><a data-type="xref" href="#SOLUTION06-ET02">See a suggested solution in Appendix A.</a></p>
+</section>
+
+
+
+
+
+
+<section class="sect1" data-type="sect1" id="CH06-ET03">
+<h1>Étude 6-3: Accumulating the Sum of a List</h1>
+<p>Add a function <code>julian/1</code> to the <code>dates</code> module that you wrote in
+<a data-type="xref" href="#CH05-ET02">Étude 5-2</a>. Given a string in ISO format (<code>"yyyy-mm-dd"</code>), it
+returns the Julian date: the day of the year.</p>
+<p>Here is some sample output.</p>
+<pre data-type="programlisting" class="programlisting" data-code-language="erl">1&gt; c(dates).
+{ok,dates}
+2&gt; dates:julian("2012-12-31").
+366
+3&gt; dates:julian("2013-12-31").
+365
+4&gt; dates:julian("2012-02-05").
+36
+5&gt; dates:julian("2013-02-05").
+36
+6&gt; dates:julian("1900-03-01").
+60
+7&gt; dates:julian("2000-03-01").
+61
+126&gt; dates:julian("2013-01-01").
+1</pre>
+<p>The <code>julian/1</code> function defines a 12-item list called <code>DaysPerMonth</code> that
+contains the number of days in each month, splits the date into
+the year, month, and day (using the <code>date_parts/1</code> function you wrote in
+<a data-type="xref" href="#CH05-ET02">Étude 5-2</a>, and then calls helper function <code>julian/5</code> (yes,
+five arguments).</p>
+<p>The <code>julian/5</code> function does all of the work. Its arguments are the year,
+month, day, the list of days per month, and an accumulated total, which
+starts at zero. <code>julian/5</code> takes the head of the days per month list and
+adds it to the accumulator, and then calls <code>julian/5</code> again with the
+tail of the days per month list and the accumulator value as its last two
+arguments.</p>
+<p>Let&#8217;s take, as an example, the sequence of calls for April 18, 2013:</p>
+<pre>julian(2013, 4, 18, [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31], 0).
+julian(2013, 4, 18, [28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31], 31).
+julian(2013, 4, 18, [31, 30, 31, 30, 31, 31, 30, 31, 30, 31], 59).
+julian(2013, 4, 18, [30, 31, 30, 31, 31, 30, 31, 30, 31], 90).</pre>
+<p>At this point, the accumulator has all the days up through the beginning of
+April, so the last call to <code>julian/5</code> just adds the 18 remaining days
+and yields 108 as its result.</p>
+<p>You know you are doing the last call when you have "used up"
+the first <em>month-1</em> items in
+the list of days per month. That happens <code>when</code> the month number is greater
+than <code>(13 - length(<em>days_per_month_list</em>))</code>. Hint: use a guard.</p>
+<p>Of course, there&#8217;s still the problem of leap years. You can handle it in
+either <code>julian/5</code> or <code>julian/1</code>.</p>
+<p>If you want to do the work in <code>julian/5</code>, then for non-leap years,
+the last call to <code>julian/5</code> adds the number of days in the target month.
+For leap years, the function must add the number of days in the
+target month plus one&#8212;but only if the month is after February.</p>
+<p>If you want to do the work in <code>julian/5</code>, use a <code>case</code> to assign either
+<code>28</code> or <code>29</code> to a variable named <code>DaysInFeb</code> (depending on whether the
+year is a leap year), and then use that variable instead of 28 when you
+construct your original days per month list.</p>
+<p>I&#8217;ll give you the code for the <code>is_leap_year/1</code> function for free; it returns
+<code>true</code> if the given year is a leap year, <code>false</code> otherwise.</p>
+<pre data-type="programlisting" class="programlisting" data-code-language="erlang">is_leap_year(Year) -&gt;
+  (Year rem 4 == 0 andalso Year rem 100 /= 0)
+  orelse (Year rem 400 == 0).</pre>
+<p><a data-type="xref" href="#SOLUTION06-ET03">See suggested solutions in Appendix A.</a></p>
+</section>
+
+
+
+
+
+
+<section class="sect1" data-type="sect1" id="CH06-INTERLUDE">
+<h1>Interlude: "Mistakes were made."</h1>
+<p>As I was writing the next two études, I tried, despite the examples in the
+book, to avoid using <code>lists:reverse/1</code>. I thought, "Why <em>can&#8217;t</em> I add items
+to the end of a list using the cons (vertical bar; <code>|</code>) notation?" Here&#8217;s why.</p>
+<p>I decided to do a simple task: take a list of numbers and return a list
+consisting of the squares of the numbers. I tried adding new items to the end
+of the list with this code:</p>
+<pre data-type="programlisting" class="programlisting" data-code-language="erlang">-module(bad_code).
+-export([squares/1]).
+
+squares(Numbers) -&gt; squares(Numbers, []).
+
+squares([], Result) -&gt; Result;
+
+squares([H | T], Result) -&gt; squares(T, [Result | H * H ]).</pre>
+<p>The resulting list was in the correct order, but it was an improper list.</p>
+<pre data-type="programlisting" class="programlisting" data-code-language="erl">1&gt; c(bad_code).
+{ok,bad_code}
+2&gt; bad_code:squares([9, 4.22, 5]).
+[[[[]|81]|17.8084]|25]</pre>
+<p>That didn&#8217;t work. Wait a minute&#8212;the book said that the right hand side of the
+cons (<code>|</code>) operator should be a list. "OK, you want a list?" I thought.
+"I&#8217;ve got your list right here." (See the last
+line of the code, where I wrap the new item in square brackets.)</p>
+<pre data-type="programlisting" class="programlisting" data-code-language="erlang">squares2(Numbers) -&gt; squares2(Numbers, []).
+
+squares2([], Result) -&gt; Result;
+
+squares2([H | T], Result) -&gt; squares2(T, [Result | [H * H] ]).</pre>
+<p>There. That should do the trick.</p>
+<pre data-type="programlisting" class="programlisting" data-code-language="erl">6&gt; c(bad_code).
+{ok,bad_code}
+7&gt; bad_code:squares2([9, 4.22, 5]).
+[[[[],81],17.8084],25]</pre>
+<p>The result was better, but only slightly better. I didn&#8217;t have an improper list
+any more, but now I had a list of list of list of lists.
+I could fix the problem by changing one line to flatten the final result.</p>
+<pre data-type="programlisting" class="programlisting" data-code-language="erlang">squares2([], Result) -&gt; lists:flatten(Result);</pre>
+<p>That worked, but it wasn&#8217;t a satisfying solution.</p>
+<ul>
+<li><p>The longer the original list, the more deeply nested the final list
+would be,</p></li>
+<li><p>I still had to call a function from the <code>lists</code> module, and</p></li>
+<li><p>A look at <a href="http://www.erlang.org/doc/efficiency_guide/listHandling.html">http://www.erlang.org/doc/efficiency_guide/listHandling.html</a> showed
+that <code>lists:flatten</code> is a very expensive operation.</p></li>
+</ul>
+<p>In light of all of this, I decided to use <code>lists:reverse/1</code> and write
+the code to generate a proper, non-nested list.</p>
+<pre data-type="programlisting" class="programlisting" data-code-language="erlang">-module(good_code).
+-export([correct_squares/1]).
+
+correct_squares(Numbers) -&gt; correct_squares(Numbers, []).
+
+correct_squares([], Result) -&gt; lists:reverse(Result);
+
+correct_squares([H | T], Result) -&gt;
+  correct_squares(T, [H * H | Result]).</pre>
+<pre data-type="programlisting" class="programlisting" data-code-language="erl">1&gt; c(good_code).
+{ok,good_code}
+2&gt; good_code:correct_squares([9, 4.22, 5]).
+[81,17.8084,25]</pre>
+<p>Success at last!  The moral of the story?</p>
+<ul>
+<li><p>RTFM (Read the Fabulous Manual).</p></li>
+<li><p>Believe what you read.</p></li>
+<li><p>If you don&#8217;t believe what you read, try it and find out.</p></li>
+<li><p>Don&#8217;t worry if you make this sort of mistake. You won&#8217;t be the first person
+to do so, and you certainly won&#8217;t be the last.</p></li>
+<li><p>When using cons, "lists come last."</p></li>
+</ul>
+<p>OK. Back to work.</p>
+</section>
+
+
+
+
+
+
+<section class="sect1" data-type="sect1" id="CH06-ET04">
+<h1>Étude 6-4: Lists of Lists</h1>
+<p>Dentists check the health of your gums by checking the depth of the "pockets"
+at six different locations around each of your 32 teeth.
+The depth is measured in millimeters. If any of the depths is greater
+than or equal to four millimeters, that tooth needs attention. (Thanks to
+Dr. Patricia Lee, DDS, for explaining this to me.)</p>
+<p>Your task is to write a module named <code>teeth</code> and a function named
+<code>alert/1</code>. The function takes a list of 32 lists of six numbers as its
+input. If a tooth isn&#8217;t present, it is represented by the list
+<code>[0]</code> instead of a list of six numbers. The function produces
+a list of the tooth numbers that require attention.  The numbers
+must be in ascending order.</p>
+<p>Here&#8217;s a set of pocket depths for a person who has had her
+upper wisdom teeth, numbers 1 and 16, removed. Just copy and paste it.</p>
+<pre>PocketDepths = [[0], [2,2,1,2,2,1], [3,1,2,3,2,3],
+[3,1,3,2,1,2], [3,2,3,2,2,1], [2,3,1,2,1,1],
+[3,1,3,2,3,2], [3,3,2,1,3,1], [4,3,3,2,3,3],
+[3,1,1,3,2,2], [4,3,4,3,2,3], [2,3,1,3,2,2],
+[1,2,1,1,3,2], [1,2,2,3,2,3], [1,3,2,1,3,3], [0],
+[3,2,3,1,1,2], [2,2,1,1,3,2], [2,1,1,1,1,2],
+[3,3,2,1,1,3], [3,1,3,2,3,2], [3,3,1,2,3,3],
+[1,2,2,3,3,3], [2,2,3,2,3,3], [2,2,2,4,3,4],
+[3,4,3,3,3,4], [1,1,2,3,1,2], [2,2,3,2,1,3],
+[3,4,2,4,4,3], [3,3,2,1,2,3], [2,2,2,2,3,3],
+[3,2,3,2,3,2]].</pre>
+<p>And here&#8217;s the output:</p>
+<pre data-type="programlisting" class="programlisting" data-code-language="erl">1&gt; c(teeth).
+{ok,teeth}
+2&gt; teeth:alert(PocketDepths).
+[9,11,25,26,29]</pre>
+<p><a data-type="xref" href="#SOLUTION06-ET04">See a suggested solution in Appendix A.</a></p>
+</section>
+
+
+
+
+
+
+<section class="sect1" data-type="sect1" id="CH06-ET05">
+<h1>Étude 6-5: Random Numbers; Generating Lists of Lists</h1>
+<p>How do you think I got the numbers for the teeth in the preceding étude?
+Do you really think I made up and typed all 180 of them? No, of course not.
+Instead, I wrote an Erlang program to create the list of lists for me,
+and that&#8217;s what you&#8217;ll do in this étude.</p>
+<p>In order to create the data for the teeth,
+I had to generate random numbers with Erlang&#8217;s
+<code>random</code> module. Try generating a random number uniformly
+distributed between 0 and 1.0 by typing this in <code>erl</code>:</p>
+<pre data-type="programlisting" class="programlisting" data-code-language="erl">1&gt; random:uniform().
+0.4435846174457203</pre>
+<p>Now, exit <code>erl</code>, restart, and type the same command again. You&#8217;ll get the
+same number. In order to ensure that you get different sets of random numbers,
+you have to <em>seed</em> the random number generator with a three-tuple. The easiest
+way to get a different seed every time you run the program is to use the
+<code>now/0</code> built-in function, which returns a different three-tuple every time
+you call it.</p>
+<pre data-type="programlisting" class="programlisting" data-code-language="erl">1&gt; now().
+{1356,887000,432535}
+2&gt; now().
+{1356,887002,15527}
+3&gt; now().
+{1356,887003,831752}</pre>
+<p>Exit <code>erl</code>, restart, it and try these commands. Do this a couple of times to
+convince yourself that you really get different random numbers. Don&#8217;t worry
+about the <code>undefined</code>; that&#8217;s just Erlang&#8217;s way of telling you that the
+random number generator wasn&#8217;t seeded before.</p>
+<pre data-type="programlisting" class="programlisting" data-code-language="erl">1&gt; random:seed(now()).
+undefined
+2&gt; random:uniform().
+0.27846009966109264</pre>
+<p>If you want to generate a random integer between 1 and <code>N</code>, use
+<code>uniform/1</code>; thus <code>random:uniform(10)</code> will generate a
+random integer from 1 to 10.</p>
+<p>Functions that use random numbers have side effects; unlike the <code>sin</code> or
+<code>sqrt</code> function, which always gives you the same numbers for the same input,
+functions that use random numbers should always give you different numbers
+for the same input. Since these functions aren&#8217;t "pure," it&#8217;s best to isolate
+them in a module of their own.</p>
+<p>In this étude, create a module named <code>non_fp</code>, and write a function
+<code>generate_teeth/2</code>. This function has a string consisting of the characters
+<code>T</code> and <code>F</code> for its first argument.
+A <code>T</code> in the string indicates that the tooth is present, and a
+<code>F</code> indicates a missing tooth. In Erlang, a string is a list of characters,
+so you can treat this string just as you would any other list. Remember to
+refer to individual characters as <code>$T</code> and <code>$F</code>.</p>
+<p>The second argument is a floating point
+number between 0 and 1.0 that indicates the probability that a tooth will be
+a good tooth.</p>
+<p>These are the helper functions I needed:</p>
+
+<dl>
+<dt><code>generate_teeth/3</code></dt>
+<dd><p>The first two arguments are the same as for <code>generate_teeth/2</code>; the
+third argument is the accumulated list. When the first argument is
+an empty list, the function yields the reverse of the accumulated list.</p></dd>
+<dt><code>generate_tooth/1</code></dt>
+<dd><p>This generates the list of numbers for a single tooth. It generates a
+random number between 0 and 1. If that number is less than the probability
+of a good tooth, it sets the "base depth" to 2, otherwise it sets the base depth to 3.</p></dd>
+<dt><code>generate_tooth/3</code></dt>
+<dd><p>The first argument is the base depth, the second is the number of items
+left to generate, and the third argument is the accumulated list. When
+the number of items hits zero, the function is finished. Otherwise, it
+adds a random integer between -1 and 1 to the base depth,
+adds it to the accumulated list, and does a recursive call with
+one less item.</p></dd>
+</dl>
+<p><a data-type="xref" href="#SOLUTION06-ET05">See a suggested solution in Appendix A.</a></p>
+</section>
+
+
+
+</section>
