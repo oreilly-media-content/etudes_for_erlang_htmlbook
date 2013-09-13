@@ -1,51 +1,35 @@
 <section data-type="chapter" id="FUNCTIONSMODULES">
 <h1>Functions and Modules</h1>
-<div data-type="note" class="note">
-You can learn more about working with functions and modules in Chapters 2, 3, and 9 of <em>Erlang Programming</em>, Chapter 3 of <em>Programming Erlang</em>, Sections 2.3, 2.5, and 2.7 of <em>Erlang and OTP in Action</em>, and Chapters 2 and 3 of <em>Learn You Some Erlang For Great Good!</em>.  There&#8217;s more on documentation in Chapter 18 of <em>Erlang Programming</em> and types in Chapter 30 of <em>Learn You Some Erlang For Great Good!</em>.
-</div>
 
-
+<div class="note" data-type="note">You can learn more about working with functions and modules in Chapters 2, 3, and 9 of <em>Erlang Programming</em>, Chapter 3 of <em>Programming Erlang</em>, Sections 2.3, 2.5, and 2.7 of <em>Erlang and OTP in Action</em>, and Chapters 2 and 3 of <em>Learn You Some Erlang For Great Good!</em>. There&rsquo;s more on documentation in Chapter 18 of <em>Erlang Programming</em> and types in Chapter 30 of <em>Learn You Some Erlang For Great Good!</em>.</div>
 
 <section class="sect1" data-type="sect1" id="CH02-ET01">
-<h1>Étude 2-1: Writing a Function</h1>
-<p>Write a module with a function that takes the length and width of a
-rectangle and returns (yields) its area.  Name the module <code>geom</code>, and
-name the function <code>area</code>. The function has arity 2, because it needs
-two pieces of information to make the calculation. In Erlang-speak:
-write function <code>area/2</code>.</p>
+<h1>&Eacute;tude 2-1: Writing a Function</h1>
+
+<p>Write a module with a function that takes the length and width of a rectangle and returns (yields) its area. Name the module <code>geom</code>, and name the function <code>area</code>. The function has arity 2, because it needs two pieces of information to make the calculation. In Erlang-speak: write function <code>area/2</code>.</p>
+
 <p>Here is some sample output.</p>
-<pre data-type="programlisting" class="programlisting" data-code-language="erlang">1&gt; c(geom).
+
+<pre class="programlisting" data-code-language="erlang" data-type="programlisting">
+1&gt; c(geom).
 {ok,geom}
 2&gt; geom:area(3,4).
 12
 3&gt; geom:area(12,7).
 84</pre>
+
 <p><a data-type="xref" href="#SOLUTION02-ET01">See a suggested solution in Appendix A.</a></p>
 </section>
 
-
-
-
-
-
 <section class="sect1" data-type="sect1" id="CH02-ET02">
-<h1>Étude 2-2: Documenting a Module</h1>
-<p>Document the <code>geom</code> module you wrote in <a data-type="xref" href="#CH02-ET01">Étude 2-1</a>.
-<a data-type="xref" href="#SOLUTION02-ET02">See a suggested solution in Appendix A.</a></p>
+<h1>&Eacute;tude 2-2: Documenting a Module</h1>
+
+<p>Document the <code>geom</code> module you wrote in <a data-type="xref" href="#CH02-ET01">&Eacute;tude 2-1</a>. <a data-type="xref" href="#SOLUTION02-ET02">See a suggested solution in Appendix A.</a></p>
 </section>
-
-
-
-
-
 
 <section class="sect1" data-type="sect1" id="CH02-ET03">
-<h1>Étude 2-3: Documenting a Function</h1>
-<p>Document the <code>area/2</code> function, and create an <em>overview.edoc</em> file to complete
-the documentation of the application you&#8217;ve written.
-<a data-type="xref" href="#SOLUTION02-ET03">See a suggested solution in Appendix A.</a></p>
+<h1>&Eacute;tude 2-3: Documenting a Function</h1>
+
+<p>Document the <code>area/2</code> function, and create an <em>overview.edoc</em> file to complete the documentation of the application you&rsquo;ve written. <a data-type="xref" href="#SOLUTION02-ET03">See a suggested solution in Appendix A.</a></p>
 </section>
-
-
-
 </section>
